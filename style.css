@@ -32,6 +32,11 @@ div#resume h2 {
   margin: 0 0 6px 0;
   position: relative
 }
+div#resume h3 {
+  font-size: 20px;
+  margin: 0 0 6px 0;
+  position: relative
+}
 
 div#resume h2 span {
   position: absolute;
@@ -46,7 +51,7 @@ div#resume h2 span {
 div#resume h3 span {
   position: absolute;
   bottom: 0;
-  right: 100;
+  right: 1000;
   font-style: italic;
   font-family: Georgia, serif;
   font-size: 16px;
