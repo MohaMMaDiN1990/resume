@@ -12,6 +12,10 @@
   const ORG_RE = /(Engineer|Supervisor|University|High School|Technical|Institute|Center|College|Company|Oil|Gas|Production|Department|Units|Co\.)/i;
   const LOCATION_RE = /([A-Za-z\-\s]+,\s*[A-Za-z\-\s]+)$/;
 
+  function isTitleCandidate(text) {
+    return ORG_RE.test(text);
+  }
+
   function buildEntries(container, sectionName) {
     const nodes = Array.from(container.children);
     const entries = [];
@@ -19,23 +23,54 @@
 
     nodes.forEach(node => {
       if (node.tagName === 'UL') {
-        const li = node.querySelector('li');
-        const liText = li ? li.textContent.trim() : '';
-        if (liText && ORG_RE.test(liText)) {
-          if (entry) entries.push(entry);
-          entry = { title: liText, date: '', location: '', body: [] };
+        const items = Array.from(node.querySelectorAll('li')).map(li => (li.textContent || '').trim()).filter(Boolean);
+        if (!items.length) return;
+
+        // For Industry-like sections, split when a title candidate appears among list items
+        if (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional')) {
+          let bullets = [];
+          for (let i = 0; i < items.length; i++) {
+            const t = items[i];
+            if (isTitleCandidate(t)) {
+              // finalize bullets for previous entry
+              if (entry && bullets.length) {
+                entry.body.push({ list: bullets });
+                bullets = [];
+                // finalize previous entry now because a new title begins
+                entries.push(entry);
+                entry = null;
+              }
+              // start new entry
+              entry = { title: t, date: '', location: '', body: [] };
+            } else {
+              if (!entry) {
+                // ignore stray bullets before any title
+                continue;
+              }
+              bullets.push(t);
+            }
+          }
+          if (entry && bullets.length) {
+            entry.body.push({ list: bullets });
+          }
           return;
         }
-        if (entry && li) {
-          const list = Array.from(node.querySelectorAll('li')).map(li => li.textContent.trim());
-          entry.body.push({ list });
-          return;
+
+        // Default behavior (e.g., Education bullets): attach as a whole list
+        if (entry) {
+          entry.body.push({ list: items });
         }
+        return;
       }
 
       if (node.tagName === 'P') {
         const raw = (node.textContent || '').trim();
         if (!raw) return;
+        // If we haven't started an entry, try to start from a strong title-like paragraph
+        if (!entry && (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional')) && isTitleCandidate(raw)) {
+          entry = { title: raw, date: '', location: '', body: [] };
+          return;
+        }
         if (!entry) return;
         const dateMatch = raw.match(DATE_RE);
         let text = raw;
@@ -53,8 +88,9 @@
             text = '';
           }
         }
-        if (text && ORG_RE.test(text) && sectionName.includes('industry')) {
-          entry.title = (entry.title + ' ' + text).replace(/\s{2,}/g, ' ').trim();
+        // Title continuation lines (e.g., "Oil Company Ahvaz, Iran") should join the title
+        if (text && isTitleCandidate(text) && (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional'))) {
+          entry.title = (entry.title + ' ' + text).replace(/\s{2,}/g, ' ').replace(/CompanyAhvaz/i, 'Company Ahvaz');
           return;
         }
         if (text) entry.body.push(text);
