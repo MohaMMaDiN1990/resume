@@ -398,6 +398,14 @@
         }
       });
 
+      // Temporarily remove Industry Experience section entirely
+      resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
+        const title = sec.querySelector('.resume-title');
+        if (title && (title.textContent || '').trim().toLowerCase() === 'industry experience') {
+          sec.remove();
+        }
+      });
+
       // Remove contact duplicates from content
       resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
         sec.querySelectorAll('p').forEach(p => {
