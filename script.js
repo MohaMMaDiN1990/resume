@@ -237,6 +237,14 @@
       if (teach && industry && teach.compareDocumentPosition(industry) & Node.DOCUMENT_POSITION_FOLLOWING) {
         resumeRoot.insertBefore(teach, industry);
       }
+
+      // Move Additional Info. before References
+      const getTitle = (sec) => ((sec.querySelector('.resume-title')?.textContent || '').trim().toLowerCase().replace(/\.$/, ''));
+      const addInfo = sectionsAfter.find(s => getTitle(s) === 'additional info');
+      const refs = sectionsAfter.find(s => getTitle(s) === 'references');
+      if (addInfo && refs) {
+        resumeRoot.insertBefore(addInfo, refs);
+      }
     })
     .catch(() => {});
 
