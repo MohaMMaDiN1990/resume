@@ -16,6 +16,15 @@
     return ORG_RE.test(text);
   }
 
+  function parseTitleAndLocation(text) {
+    const fixed = text.replace(/CompanyAhvaz/gi, 'Company Ahvaz');
+    const m = fixed.match(LOCATION_RE);
+    if (m) {
+      return { title: fixed.replace(LOCATION_RE, '').trim(), location: m[0].trim() };
+    }
+    return { title: fixed.trim(), location: '' };
+  }
+
   function buildEntries(container, sectionName) {
     const nodes = Array.from(container.children);
     const entries = [];
@@ -36,17 +45,14 @@
               if (entry && bullets.length) {
                 entry.body.push({ list: bullets });
                 bullets = [];
-                // finalize previous entry now because a new title begins
                 entries.push(entry);
                 entry = null;
               }
-              // start new entry
-              entry = { title: t, date: '', location: '', body: [] };
+              // start new entry from title item, extracting location if present
+              const parsed = parseTitleAndLocation(t);
+              entry = { title: parsed.title, date: '', location: parsed.location, body: [] };
             } else {
-              if (!entry) {
-                // ignore stray bullets before any title
-                continue;
-              }
+              if (!entry) continue;
               bullets.push(t);
             }
           }
@@ -66,31 +72,36 @@
       if (node.tagName === 'P') {
         const raw = (node.textContent || '').trim();
         if (!raw) return;
-        // If we haven't started an entry, try to start from a strong title-like paragraph
+        // Try to start a new entry on strong title-like paragraph
         if (!entry && (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional')) && isTitleCandidate(raw)) {
-          entry = { title: raw, date: '', location: '', body: [] };
+          const parsed = parseTitleAndLocation(raw);
+          entry = { title: parsed.title, date: '', location: parsed.location, body: [] };
           return;
         }
         if (!entry) return;
+        // Extract date
         const dateMatch = raw.match(DATE_RE);
         let text = raw;
         if (!entry.date && dateMatch) {
           entry.date = dateMatch[0];
           text = text.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
         }
+        // Extract location from this line if present
         if (!entry.location) {
-          const locMatch = text.match(LOCATION_RE);
-          if (locMatch) {
-            entry.location = locMatch[0].trim();
-            text = text.replace(LOCATION_RE, '').trim();
-          } else if (/Iran/i.test(text)) {
-            entry.location = text;
-            text = '';
+          const parsedLine = parseTitleAndLocation(text);
+          if (parsedLine.location) {
+            entry.location = parsedLine.location;
+            text = parsedLine.title;
           }
         }
-        // Title continuation lines (e.g., "Oil Company Ahvaz, Iran") should join the title
+        // Title continuation lines should join the title, then re-extract location from the merged title
         if (text && isTitleCandidate(text) && (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional'))) {
-          entry.title = (entry.title + ' ' + text).replace(/\s{2,}/g, ' ').replace(/CompanyAhvaz/i, 'Company Ahvaz');
+          entry.title = (entry.title + ' ' + text).replace(/\s{2,}/g, ' ').trim();
+          if (!entry.location) {
+            const parsedMerged = parseTitleAndLocation(entry.title);
+            entry.title = parsedMerged.title;
+            if (parsedMerged.location) entry.location = parsedMerged.location;
+          }
           return;
         }
         if (text) entry.body.push(text);
@@ -195,12 +206,10 @@
           const newDetails = document.createElement('div');
           newDetails.className = 'resume-details';
 
-          // Create a new list and move all items after the marker into it
           const newList = document.createElement('ul');
           for (let i = markerIdx + 1; i < lis.length; i++) {
             newList.appendChild(lis[i]);
           }
-          // Remove the marker itself
           lis[markerIdx].remove();
           if (newList.children.length > 0) {
             newDetails.appendChild(newList);
