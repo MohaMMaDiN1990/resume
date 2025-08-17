@@ -34,6 +34,48 @@ def is_heading(style_val):
 	lower = style_val.lower()
 	return 'heading' in lower or lower in {'title'}
 
+# New helpers for heading level detection
+
+def get_run_max_font_size(p):
+	max_sz = None
+	for rPr in p.findall(f'.//{W_NS}rPr'):
+		sz = rPr.find(f'{W_NS}sz')
+		if sz is not None:
+			val = sz.attrib.get(f'{W_NS}val', sz.attrib.get('val'))
+			try:
+				v = int(val)
+				if max_sz is None or v > max_sz:
+					max_sz = v
+			except Exception:
+				pass
+	return max_sz
+
+
+def get_heading_level(p, style_val):
+	# Prefer explicit heading styles from Word
+	if style_val:
+		lower = style_val.lower()
+		if 'heading' in lower:
+			# Try to extract a digit: heading 1, Heading1, etc.
+			for ch in lower:
+				if ch.isdigit():
+					try:
+						return int(ch)
+					except Exception:
+						return 1
+			return 1
+		if lower in {'title'}:
+			return 1
+	# Fallback heuristic based on font size (half-points)
+	sz = get_run_max_font_size(p)
+	if sz is not None:
+		# 28 = 14pt, 24 = 12pt
+		if sz >= 28:
+			return 1
+		if sz >= 24:
+			return 2
+	return 0
+
 
 def is_list_paragraph(p):
 	pPr = p.find(f'{W_NS}pPr')
@@ -63,9 +105,10 @@ def convert_docx_to_sections(docx_path: Path):
 		if not text:
 			continue
 		style = get_paragraph_style(p)
-		if is_heading(style):
+		level = get_heading_level(p, style)
+		if level:
 			flush_list_into_current()
-			current = {'title': text, 'blocks': []}
+			current = {'title': text, 'level': level, 'blocks': []}
 			sections.append(current)
 			continue
 		if is_list_paragraph(p):
@@ -76,7 +119,7 @@ def convert_docx_to_sections(docx_path: Path):
 		else:
 			flush_list_into_current()
 			if current is None:
-				current = {'title': 'Summary', 'blocks': []}
+				current = {'title': 'Summary', 'level': 1, 'blocks': []}
 				sections.append(current)
 			current['blocks'].append({'type': 'p', 'text': text})
 
@@ -89,7 +132,8 @@ def sections_to_html(sections):
 	out.append('<div id="generated-resume">')
 	for sec in sections:
 		title = html.escape(sec['title'])
-		out.append('  <section class="resume-section">')
+		lvl = sec.get('level', 1)
+		out.append(f'  <section class="resume-section" data-level="{lvl}">')
 		out.append(f'    <h2 class="resume-title" tabindex="0">{title}</h2>')
 		out.append('    <div class="resume-details">')
 		for block in sec['blocks']:

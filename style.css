@@ -140,6 +140,52 @@ body {
   margin: 0 0 10px 18px;
 }
 
+/* Contact list beside name */
+.hero__contacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 6px 18px;
+  list-style: none;
+  padding: 8px 0 0 0;
+  margin: 0 0 4px 0;
+}
+
+.hero__contacts a { color: inherit; }
+.hero__contacts strong { color: var(--muted); font-weight: 600; }
+
+/* Section separation and coloring */
+.resume-section {
+  border: 1px solid hsl(calc(var(--hue) + 30), 30%, 85%);
+  position: relative;
+}
+
+.resume-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.resume-section:hover::after,
+.resume-section[aria-expanded="true"]::after {
+  border-color: hsl(calc(var(--hue) + 30), 70%, 60%);
+}
+
+/* Color-code by heading level */
+.resume-section[data-level="1"] { --accent: hsl(205, 85%, 45%); }
+.resume-section[data-level="2"] { --accent: hsl(160, 75%, 40%); }
+.resume-section[data-level="3"] { --accent: hsl(45, 85%, 50%); }
+.resume-section[data-level="4"] { --accent: hsl(12, 80%, 55%); }
+
+/* Size emphasis by level */
+.resume-section[data-level="1"] .resume-title { font-size: clamp(20px, 2.8vw, 26px); }
+.resume-section[data-level="2"] .resume-title { font-size: clamp(18px, 2.4vw, 22px); }
+.resume-section[data-level="3"] .resume-title { font-size: clamp(16px, 2.0vw, 20px); }
+
+/* Divider between sections on small screens */
 @media (max-width: 900px) {
   #resume-root {
     grid-template-columns: 1fr;
@@ -151,4 +197,5 @@ body {
   .hero__photo { 
     justify-self: center;
   }
+  .resume-section { border-width: 1px; }
 }
