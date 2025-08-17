@@ -36,6 +36,164 @@
   btnInteractive && btnInteractive.addEventListener('click', () => setView('interactive'));
   btnPdf && btnPdf.addEventListener('click', () => setView('pdf'));
 
+  const DATE_RE = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}|\b\d{4}\b|\b\d{4}\s*[–-]\s*(present|\d{4})/i;
+  const UNI_RE = /(University|High School|Technical|Institute|Center|College)/i;
+
+  function groupEducation(section) {
+    const container = section.querySelector('.resume-details');
+    if (!container) return;
+    const nodes = Array.from(container.children);
+    const entries = [];
+    let entry = null;
+
+    nodes.forEach(node => {
+      if (node.tagName === 'P') {
+        const t = node.textContent.trim();
+        if (UNI_RE.test(t)) {
+          if (entry) entries.push(entry);
+          const dateMatch = t.match(DATE_RE);
+          let title = t;
+          let meta = '';
+          if (dateMatch) {
+            meta = dateMatch[0];
+            title = t.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+          }
+          entry = { title, meta, body: [] };
+        } else if (entry) {
+          entry.body.push(t);
+        }
+      } else if (node.tagName === 'UL' && entry) {
+        entry.body.push({ list: Array.from(node.querySelectorAll('li')).map(li => li.textContent.trim()) });
+      }
+    });
+    if (entry) entries.push(entry);
+
+    if (entries.length) {
+      container.innerHTML = '';
+      entries.forEach(e => {
+        const art = document.createElement('article');
+        art.className = 'entry';
+        const header = document.createElement('div');
+        header.className = 'entry__header';
+        const h3 = document.createElement('h3');
+        h3.className = 'entry__title';
+        h3.textContent = e.title;
+        const span = document.createElement('span');
+        span.className = 'entry__meta';
+        span.textContent = e.meta;
+        header.appendChild(h3);
+        header.appendChild(span);
+        art.appendChild(header);
+        const body = document.createElement('div');
+        body.className = 'entry__body';
+        e.body.forEach(b => {
+          if (typeof b === 'string') {
+            const p = document.createElement('p');
+            p.textContent = b;
+            body.appendChild(p);
+          } else if (b.list) {
+            const ul = document.createElement('ul');
+            b.list.forEach(it => {
+              const li = document.createElement('li');
+              li.textContent = it;
+              ul.appendChild(li);
+            });
+            body.appendChild(ul);
+          }
+        });
+        art.appendChild(body);
+        container.appendChild(art);
+      });
+    }
+  }
+
+  function groupIndustry(section) {
+    const container = section.querySelector('.resume-details');
+    if (!container) return;
+    const nodes = Array.from(container.children);
+    const entries = [];
+    let entry = null;
+
+    nodes.forEach(node => {
+      if (node.tagName === 'P') {
+        const t = node.textContent.trim();
+        if (!entry) {
+          entry = { title: t, meta: '', body: [] };
+          return;
+        }
+        if (!entry.meta && DATE_RE.test(t)) {
+          entry.meta = t.match(DATE_RE)[0];
+          return;
+        }
+        if (UNI_RE.test(t) || /Engineer|Supervisor|Company|Co\./i.test(t)) {
+          if (entry) entries.push(entry);
+          entry = { title: t, meta: '', body: [] };
+          return;
+        }
+        entry.body.push(t);
+      } else if (node.tagName === 'UL' && entry) {
+        entry.body.push({ list: Array.from(node.querySelectorAll('li')).map(li => li.textContent.trim()) });
+      }
+    });
+    if (entry) entries.push(entry);
+
+    if (entries.length) {
+      container.innerHTML = '';
+      entries.forEach(e => {
+        const art = document.createElement('article');
+        art.className = 'entry';
+        const header = document.createElement('div');
+        header.className = 'entry__header';
+        const h3 = document.createElement('h3');
+        h3.className = 'entry__title';
+        h3.textContent = e.title;
+        const span = document.createElement('span');
+        span.className = 'entry__meta';
+        span.textContent = e.meta;
+        header.appendChild(h3);
+        header.appendChild(span);
+        art.appendChild(header);
+        const body = document.createElement('div');
+        body.className = 'entry__body';
+        e.body.forEach(b => {
+          if (typeof b === 'string') {
+            const p = document.createElement('p');
+            p.textContent = b;
+            body.appendChild(p);
+          } else if (b.list) {
+            const ul = document.createElement('ul');
+            b.list.forEach(it => {
+              const li = document.createElement('li');
+              li.textContent = it;
+              ul.appendChild(li);
+            });
+            body.appendChild(ul);
+          }
+        });
+        art.appendChild(body);
+        container.appendChild(art);
+      });
+    }
+  }
+
+  function groupPublications(section) {
+    const container = section.querySelector('.resume-details');
+    if (!container) return;
+    const nodes = Array.from(container.children).filter(n => n.tagName === 'P');
+    if (!nodes.length) return;
+    const ul = document.createElement('ul');
+    nodes.forEach(n => {
+      const t = n.textContent.trim();
+      if (t) {
+        const li = document.createElement('li');
+        li.textContent = t;
+        ul.appendChild(li);
+      }
+    });
+    container.innerHTML = '';
+    container.appendChild(ul);
+  }
+
   // Load converted sections
   fetch('./converted.html', { cache: 'no-store' })
     .then(r => r.ok ? r.text() : '')
@@ -73,6 +231,11 @@
             title.click();
           }
         });
+
+        const name = (title.textContent || '').trim().toLowerCase();
+        if (name === 'education') groupEducation(sec);
+        if (name === 'industry experience' || name === 'work experience' || name === 'professional experience') groupIndustry(sec);
+        if (name === 'publications' || name === 'journal publications' || name === 'conference publications') groupPublications(sec);
       });
     })
     .catch(() => {});
