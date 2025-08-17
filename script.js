@@ -400,13 +400,7 @@
 
       // Do not remove email/phone paragraphs globally; preserve original wording
 
-      // Temporarily remove Industry Experience section entirely
-      resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
-        const title = sec.querySelector('.resume-title');
-        if (title && (title.textContent || '').trim().toLowerCase() === 'industry experience') {
-          sec.remove();
-        }
-      });
+      // Keep Industry Experience; no removal
 
       // Remove contact duplicates from content
       resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
@@ -502,30 +496,7 @@
         }
       }
 
-      // Force Industry Experience to exact bullet list as specified
-      const industrySec = sectionsAfter.find(s => ['industry experience'].includes(getTitle(s)));
-      if (industrySec) {
-        const details = industrySec.querySelector('.resume-details');
-        if (details) {
-          const ul = document.createElement('ul');
-          [
-            'I & C engineering in the most important EPC projects of Iran',
-            'Assessing designing documents',
-            'Evaluating design,',
-            'Corresponding with contractors in English',
-            'Electronic Supervisor',
-            'Design of Self-Powered Electronic Boards for Telephones',
-            'Transforming the analog telecom. links into the digital',
-            'Maintenance and installation of technical devices and systems'
-          ].forEach(text => {
-            const li = document.createElement('li');
-            li.textContent = text;
-            ul.appendChild(li);
-          });
-          details.innerHTML = '';
-          details.appendChild(ul);
-        }
-      }
+      // Do not override Industry Experience: render exactly as in converted.html
     })
     .catch(() => {});
 
