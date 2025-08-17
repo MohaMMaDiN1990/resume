@@ -139,6 +139,44 @@
     });
   }
 
+  function splitAdditionalInfo() {
+    const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+    sections.forEach(sec => {
+      const details = sec.querySelector('.resume-details');
+      if (!details) return;
+      const lists = Array.from(details.querySelectorAll('ul'));
+      lists.forEach(ul => {
+        const lis = Array.from(ul.querySelectorAll('li'));
+        const markerIdx = lis.findIndex(li => (li.textContent || '').trim().toLowerCase() === 'additional info.' || (li.textContent || '').trim().toLowerCase() === 'additional info');
+        if (markerIdx !== -1) {
+          const newSection = document.createElement('section');
+          newSection.className = 'resume-section';
+          newSection.setAttribute('data-level', '1');
+          const h2 = document.createElement('h2');
+          h2.className = 'resume-title';
+          h2.setAttribute('tabindex', '0');
+          h2.textContent = 'Additional Info.';
+          const newDetails = document.createElement('div');
+          newDetails.className = 'resume-details';
+
+          // Create a new list and move all items after the marker into it
+          const newList = document.createElement('ul');
+          for (let i = markerIdx + 1; i < lis.length; i++) {
+            newList.appendChild(lis[i]);
+          }
+          // Remove the marker itself
+          lis[markerIdx].remove();
+          if (newList.children.length > 0) {
+            newDetails.appendChild(newList);
+            newSection.appendChild(h2);
+            newSection.appendChild(newDetails);
+            sec.parentNode.insertBefore(newSection, sec.nextSibling);
+          }
+        }
+      });
+    });
+  }
+
   // Load converted sections
   fetch('./converted.html', { cache: 'no-store' })
     .then(r => r.ok ? r.text() : '')
@@ -164,8 +202,9 @@
         });
       });
 
-      // Split Programming Languages -> Technical Skills section
+      // Split sections by markers before wiring interactions
       splitTechnicalSkills();
+      splitAdditionalInfo();
 
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
@@ -192,8 +231,9 @@
       });
 
       // Move Teaching Experience before Industry Experience
-      const teach = sections.find(s => (s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase() === 'teaching experience');
-      const industry = sections.find(s => ['industry experience', 'work experience', 'professional experience'].includes((s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase()));
+      const sectionsAfter = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+      const teach = sectionsAfter.find(s => (s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase() === 'teaching experience');
+      const industry = sectionsAfter.find(s => ['industry experience', 'work experience', 'professional experience'].includes((s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase()));
       if (teach && industry && teach.compareDocumentPosition(industry) & Node.DOCUMENT_POSITION_FOLLOWING) {
         resumeRoot.insertBefore(teach, industry);
       }
