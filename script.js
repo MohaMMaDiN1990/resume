@@ -47,25 +47,35 @@
     let entry = null;
 
     nodes.forEach(node => {
-      if (node.tagName === 'P') {
-        const t = node.textContent.trim();
-        if (UNI_RE.test(t)) {
+      if (node.tagName === 'UL') {
+        const li = node.querySelector('li');
+        const liText = li ? li.textContent.trim() : '';
+        if (liText && UNI_RE.test(liText)) {
           if (entry) entries.push(entry);
-          const dateMatch = t.match(DATE_RE);
-          let title = t;
-          let meta = '';
-          if (dateMatch) {
-            meta = dateMatch[0];
-            title = t.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-          }
-          entry = { title, meta, body: [] };
-        } else if (entry) {
-          entry.body.push(t);
+          entry = { title: liText, meta: '', body: [] };
+          return;
         }
-      } else if (node.tagName === 'UL' && entry) {
-        entry.body.push({ list: Array.from(node.querySelectorAll('li')).map(li => li.textContent.trim()) });
+        if (entry && li) {
+          const list = Array.from(node.querySelectorAll('li')).map(li => li.textContent.trim());
+          entry.body.push({ list });
+          return;
+        }
+      }
+
+      if (node.tagName === 'P') {
+        const raw = node.textContent.trim();
+        if (!raw) return;
+        if (!entry) return; // wait until a school title is encountered
+        const dateMatch = raw.match(DATE_RE);
+        let text = raw;
+        if (!entry.meta && dateMatch) {
+          entry.meta = dateMatch[0];
+          text = raw.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+        }
+        if (text) entry.body.push(text);
       }
     });
+
     if (entry) entries.push(entry);
 
     if (entries.length) {
