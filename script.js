@@ -17,15 +17,15 @@
   }
 
   function parseTitleAndLocation(text) {
-    const fixed = text.replace(/CompanyAhvaz/gi, 'Company Ahvaz');
-    const m = fixed.match(LOCATION_RE);
+    const m = text.match(LOCATION_RE);
     if (m) {
-      return { title: fixed.replace(LOCATION_RE, '').trim(), location: m[0].trim() };
+      return { title: text.replace(LOCATION_RE, '').trim(), location: m[0].trim() };
     }
-    return { title: fixed.trim(), location: '' };
+    return { title: text.trim(), location: '' };
   }
 
   function buildEntries(container, sectionName) {
+    const isIndustry = sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional');
     const nodes = Array.from(container.children);
     const entries = [];
     let entry = null;
@@ -35,20 +35,17 @@
         const items = Array.from(node.querySelectorAll('li')).map(li => (li.textContent || '').trim()).filter(Boolean);
         if (!items.length) return;
 
-        // For Industry-like sections, split when a title candidate appears among list items
-        if (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional')) {
+        if (isIndustry) {
           let bullets = [];
           for (let i = 0; i < items.length; i++) {
             const t = items[i];
             if (isTitleCandidate(t)) {
-              // finalize bullets for previous entry
               if (entry && bullets.length) {
                 entry.body.push({ list: bullets });
                 bullets = [];
                 entries.push(entry);
                 entry = null;
               }
-              // start new entry from title item, extracting location if present
               const parsed = parseTitleAndLocation(t);
               entry = { title: parsed.title, date: '', location: parsed.location, body: [] };
             } else {
@@ -62,7 +59,7 @@
           return;
         }
 
-        // Default behavior (e.g., Education bullets): attach as a whole list
+        // Education and others: attach list to current entry
         if (entry) {
           entry.body.push({ list: items });
         }
@@ -72,37 +69,32 @@
       if (node.tagName === 'P') {
         const raw = (node.textContent || '').trim();
         if (!raw) return;
-        // Try to start a new entry on strong title-like paragraph
-        if (!entry && (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional')) && isTitleCandidate(raw)) {
+
+        if (isIndustry) {
+          if (!entry) return; // don't start entries from P in industry; keep exact wording
+          entry.body.push(raw);
+          return;
+        }
+
+        // Education and others
+        if (!entry && isTitleCandidate(raw)) {
           const parsed = parseTitleAndLocation(raw);
           entry = { title: parsed.title, date: '', location: parsed.location, body: [] };
           return;
         }
         if (!entry) return;
-        // Extract date
         const dateMatch = raw.match(DATE_RE);
         let text = raw;
         if (!entry.date && dateMatch) {
           entry.date = dateMatch[0];
           text = text.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
         }
-        // Extract location from this line if present
         if (!entry.location) {
           const parsedLine = parseTitleAndLocation(text);
           if (parsedLine.location) {
             entry.location = parsedLine.location;
             text = parsedLine.title;
           }
-        }
-        // Title continuation lines should join the title, then re-extract location from the merged title
-        if (text && isTitleCandidate(text) && (sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional'))) {
-          entry.title = (entry.title + ' ' + text).replace(/\s{2,}/g, ' ').trim();
-          if (!entry.location) {
-            const parsedMerged = parseTitleAndLocation(entry.title);
-            entry.title = parsedMerged.title;
-            if (parsedMerged.location) entry.location = parsedMerged.location;
-          }
-          return;
         }
         if (text) entry.body.push(text);
       }
@@ -123,11 +115,13 @@
         const span = document.createElement('span');
         span.className = 'entry__meta';
         const metaParts = [];
-        if (e.location) metaParts.push(e.location);
-        if (e.date) metaParts.push(e.date);
+        if (!isIndustry) {
+          if (e.location) metaParts.push(e.location);
+          if (e.date) metaParts.push(e.date);
+        }
         span.textContent = metaParts.join(' — ');
         header.appendChild(h3);
-        header.appendChild(span);
+        if (metaParts.length) header.appendChild(span);
         art.appendChild(header);
         const body = document.createElement('div');
         body.className = 'entry__body';
