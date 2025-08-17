@@ -10,6 +10,7 @@ on:
       - 'converted.html'
       - 'MohaMMaD2.jpeg'
       - 'CV.docx'
+      - 'CV.pdf'
       - 'tools/**'
       - '.github/workflows/pages.yml'
 

@@ -8,6 +8,7 @@
   const btnPdf = document.getElementById('btn-pdf');
   const pdfView = document.getElementById('pdf-view');
   const pdfFrame = document.getElementById('pdf-frame');
+  const downloadPdf = document.getElementById('download-pdf');
 
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
@@ -18,6 +19,8 @@
     .then(res => {
       if (res.ok) {
         viewSwitcher.hidden = false;
+        if (downloadPdf) downloadPdf.hidden = false;
+        setView('pdf');
       }
     })
     .catch(() => {});
