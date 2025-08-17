@@ -3,9 +3,35 @@
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
   const yearEl = document.getElementById('year');
+  const viewSwitcher = document.getElementById('view-switcher');
+  const btnInteractive = document.getElementById('btn-interactive');
+  const btnPdf = document.getElementById('btn-pdf');
+  const pdfView = document.getElementById('pdf-view');
+  const pdfFrame = document.getElementById('pdf-frame');
+
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+
+  // detect if CV.pdf exists and enable switcher
+  fetch('CV.pdf', { method: 'HEAD' })
+    .then(res => {
+      if (res.ok) {
+        viewSwitcher.hidden = false;
+      }
+    })
+    .catch(() => {});
+
+  function setView(mode) {
+    const interactive = mode === 'interactive';
+    btnInteractive && btnInteractive.setAttribute('aria-pressed', String(interactive));
+    btnPdf && btnPdf.setAttribute('aria-pressed', String(!interactive));
+    resumeRoot.hidden = !interactive;
+    pdfView.hidden = interactive;
+  }
+
+  btnInteractive && btnInteractive.addEventListener('click', () => setView('interactive'));
+  btnPdf && btnPdf.addEventListener('click', () => setView('pdf'));
 
   // Load converted sections
   fetch('./converted.html', { cache: 'no-store' })
@@ -13,6 +39,21 @@
     .then(html => {
       if (!html) return;
       resumeRoot.innerHTML = html;
+
+      // Remove contact duplicates from content
+      const text = resumeRoot.textContent || '';
+      const contactHints = ['@', 'ORCID', 'Phone', '+98', 'Ahvaz', 'IRAN'];
+      if (contactHints.some(s => text.includes(s))) {
+        resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
+          sec.querySelectorAll('p').forEach(p => {
+            const t = p.textContent || '';
+            if (/orcid|@|phone|email|address/i.test(t)) {
+              p.remove();
+            }
+          });
+        });
+      }
+
       // mark sections collapsed by default for click/tap
       const sections = resumeRoot.querySelectorAll('.resume-section');
       sections.forEach(sec => {
