@@ -177,8 +177,7 @@
 
     // Education via colon markers (if present)
     if (sectionName.includes('education')) {
-      if (buildEducationByColon(container) === true) return;
-      // Fallback: bold school line and group following details without changing wording
+      // Bold school line and group following details without changing wording
       formatEducationSchools(container);
       return;
     }
