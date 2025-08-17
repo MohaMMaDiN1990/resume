@@ -358,7 +358,10 @@
         const name = (title.textContent || '').trim().toLowerCase();
         if (name === 'education' || name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
           const container = sec.querySelector('.resume-details');
-          buildEntries(container, name);
+          // Do not regroup Education: preserve exact wording
+          if (name !== 'education') {
+            buildEntries(container, name);
+          }
         }
       });
 
