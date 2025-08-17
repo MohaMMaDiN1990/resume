@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = '2025-08-17-3';
+  const VERSION = '2025-08-17-6';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -398,19 +398,7 @@
         }
       });
 
-      // Do not remove email/phone paragraphs globally; preserve original wording
-
-      // Keep Industry Experience; no removal
-
-      // Remove contact duplicates from content
-      resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
-        sec.querySelectorAll('p').forEach(p => {
-          const t = p.textContent || '';
-          if (/orcid|@|phone|email|address/i.test(t)) {
-            p.remove();
-          }
-        });
-      });
+      // (disabled) Do not strip contact lines; keep content exactly as in CV
 
       // Split sections by markers before wiring interactions
       splitTechnicalSkills();
@@ -434,9 +422,11 @@
         });
 
         const name = (title.textContent || '').trim().toLowerCase();
-        if (name === 'education' || name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
+        if (name === 'education') {
           const container = sec.querySelector('.resume-details');
           buildEntries(container, name);
+        } else if (name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
+          // Render exactly as converted; no transformation
         }
       });
 
