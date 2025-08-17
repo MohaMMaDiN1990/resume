@@ -398,6 +398,8 @@
         }
       });
 
+      // Do not remove email/phone paragraphs globally; preserve original wording
+
       // Temporarily remove Industry Experience section entirely
       resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
         const title = sec.querySelector('.resume-title');
@@ -460,7 +462,7 @@
         resumeRoot.insertBefore(addInfo, refs);
       }
 
-      // Move referee email beside their name in References
+      // For each referee, insert email as a new line below their name and keep original details
       if (refs) {
         const details = refs.querySelector('.resume-details');
         if (details) {
@@ -471,7 +473,7 @@
             if (node.tagName === 'UL') {
               const li = node.querySelector('li');
               if (!li) continue;
-              // find next paragraph with an email before the next UL
+              // find the next paragraph with an email before the next UL
               for (let j = i + 1; j < nodes.length; j++) {
                 if (nodes[j].tagName === 'UL') break;
                 if (nodes[j].tagName === 'P') {
@@ -479,16 +481,17 @@
                   const m = text.match(emailRe);
                   if (m) {
                     const email = m[0];
-                    li.innerHTML = `${li.innerHTML} — <a href="mailto:${email}">${email}</a>`;
-                    // remove "Email address (email)," prefix if present; otherwise remove the raw email
-                    let newText = text.replace(/Email\s*address\s*\([^)]*\)\s*,?\s*/i, '').replace(/Email\s*Address\s*\([^)]*\)\s*,?\s*/i, '').trim();
-                    if (newText === text) {
-                      newText = text.replace(email, '').replace(/\(\s*\)/, '').replace(/^[,\s]+|[,\s]+$/g, '').trim();
-                    }
-                    if (newText.length === 0) {
-                      nodes[j].remove();
-                    } else {
-                      nodes[j].textContent = newText;
+                    // Insert a new paragraph with the email link right after the UL
+                    // Avoid duplicate insertion if already present
+                    const nextSibling = node.nextElementSibling;
+                    const already = nextSibling && nextSibling.tagName === 'P' && (nextSibling.textContent || '').includes(email);
+                    if (!already) {
+                      const p = document.createElement('p');
+                      const a = document.createElement('a');
+                      a.href = `mailto:${email}`;
+                      a.textContent = email;
+                      p.appendChild(a);
+                      details.insertBefore(p, node.nextSibling);
                     }
                     break;
                   }
