@@ -119,6 +119,19 @@
     // Group each school (ul>li) as bold header, with following siblings as details
     const nodes = Array.from(container.children);
     if (!nodes.length) return;
+
+    function boldGPA(el) {
+      if (!el || el.nodeType !== 1) return;
+      const re = /(GPA\s*:?[\s\t]*[0-9]+(?:\.[0-9]+)?(?:\s*out of\s*\d+)*)/gi;
+      if (el.tagName === 'P' || el.tagName === 'LI') {
+        const txt = el.textContent || '';
+        const replaced = txt.replace(re, '<strong>$1</strong>');
+        if (replaced !== txt) el.innerHTML = replaced;
+      } else {
+        Array.from(el.childNodes).forEach(child => boldGPA(child));
+      }
+    }
+
     const articles = [];
     let i = 0;
     while (i < nodes.length) {
@@ -148,12 +161,15 @@
         if (trailing) {
           const pLoc = document.createElement('p');
           pLoc.textContent = trailing;
+          boldGPA(pLoc);
           body.appendChild(pLoc);
         }
         // collect following siblings until next UL or end
         let j = i + 1;
         while (j < nodes.length && nodes[j].tagName !== 'UL') {
-          body.appendChild(nodes[j].cloneNode(true));
+          const cloned = nodes[j].cloneNode(true);
+          boldGPA(cloned);
+          body.appendChild(cloned);
           j += 1;
         }
         art.appendChild(body);
