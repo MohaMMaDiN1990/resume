@@ -460,6 +460,45 @@
         resumeRoot.insertBefore(addInfo, refs);
       }
 
+      // Move referee email beside their name in References
+      if (refs) {
+        const details = refs.querySelector('.resume-details');
+        if (details) {
+          const nodes = Array.from(details.children);
+          const emailRe = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+          for (let i = 0; i < nodes.length; i++) {
+            const node = nodes[i];
+            if (node.tagName === 'UL') {
+              const li = node.querySelector('li');
+              if (!li) continue;
+              // find next paragraph with an email before the next UL
+              for (let j = i + 1; j < nodes.length; j++) {
+                if (nodes[j].tagName === 'UL') break;
+                if (nodes[j].tagName === 'P') {
+                  const text = nodes[j].textContent || '';
+                  const m = text.match(emailRe);
+                  if (m) {
+                    const email = m[0];
+                    li.innerHTML = `${li.innerHTML} — <a href="mailto:${email}">${email}</a>`;
+                    // remove "Email address (email)," prefix if present; otherwise remove the raw email
+                    let newText = text.replace(/Email\s*address\s*\([^)]*\)\s*,?\s*/i, '').replace(/Email\s*Address\s*\([^)]*\)\s*,?\s*/i, '').trim();
+                    if (newText === text) {
+                      newText = text.replace(email, '').replace(/\(\s*\)/, '').replace(/^[,\s]+|[,\s]+$/g, '').trim();
+                    }
+                    if (newText.length === 0) {
+                      nodes[j].remove();
+                    } else {
+                      nodes[j].textContent = newText;
+                    }
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
       // Force Industry Experience to exact bullet list as specified
       const industrySec = sectionsAfter.find(s => ['industry experience'].includes(getTitle(s)));
       if (industrySec) {
