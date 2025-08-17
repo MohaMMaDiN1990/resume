@@ -94,6 +94,14 @@
       if (!html) return;
       resumeRoot.innerHTML = html;
 
+      // Remove Summary sections entirely
+      resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
+        const title = sec.querySelector('.resume-title');
+        if (title && (title.textContent || '').trim().toLowerCase() === 'summary') {
+          sec.remove();
+        }
+      });
+
       // Remove contact duplicates from content
       resumeRoot.querySelectorAll('.resume-section').forEach(sec => {
         sec.querySelectorAll('p').forEach(p => {
