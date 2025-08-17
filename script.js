@@ -1,4 +1,5 @@
 (function () {
+  const VERSION = '2025-08-17-3';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -383,7 +384,7 @@
   }
 
   // Load converted sections
-  fetch('./converted.html', { cache: 'no-store' })
+  fetch('./converted.html?v=' + encodeURIComponent(VERSION), { cache: 'no-store' })
     .then(r => r.ok ? r.text() : '')
     .then(html => {
       if (!html) return;
