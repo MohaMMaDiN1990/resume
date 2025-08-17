@@ -81,7 +81,9 @@
       header.className = 'entry__header';
       const h3 = document.createElement('h3');
       h3.className = 'entry__title';
-      h3.textContent = e.title;
+      const strong = document.createElement('strong');
+      strong.textContent = e.title;
+      h3.appendChild(strong);
       const span = document.createElement('span');
       span.className = 'entry__meta';
       span.textContent = e.meta || '';
@@ -113,16 +115,61 @@
     return true;
   }
 
+  function formatEducationSchools(container) {
+    // Group each school (ul>li) as bold header, with following siblings as details
+    const nodes = Array.from(container.children);
+    if (!nodes.length) return;
+    const articles = [];
+    let i = 0;
+    while (i < nodes.length) {
+      const node = nodes[i];
+      if (node.tagName === 'UL') {
+        const li = node.querySelector('li');
+        const headerText = (li && li.textContent) ? li.textContent.trim() : '';
+        const art = document.createElement('article');
+        art.className = 'entry';
+        const header = document.createElement('div');
+        header.className = 'entry__header';
+        const h3 = document.createElement('h3');
+        h3.className = 'entry__title';
+        const strong = document.createElement('strong');
+        strong.textContent = headerText;
+        h3.appendChild(strong);
+        header.appendChild(h3);
+        art.appendChild(header);
+        const body = document.createElement('div');
+        body.className = 'entry__body';
+        // collect following siblings until next UL or end
+        let j = i + 1;
+        while (j < nodes.length && nodes[j].tagName !== 'UL') {
+          body.appendChild(nodes[j].cloneNode(true));
+          j += 1;
+        }
+        art.appendChild(body);
+        articles.push(art);
+        i = j;
+      } else {
+        i += 1;
+      }
+    }
+    if (articles.length) {
+      container.innerHTML = '';
+      articles.forEach(a => container.appendChild(a));
+    }
+  }
+
   function buildEntries(container, sectionName) {
     const isIndustry = sectionName.includes('industry') || sectionName.includes('work') || sectionName.includes('professional');
     const nodes = Array.from(container.children);
     const entries = [];
     let entry = null;
 
-    // Education via colon markers
+    // Education via colon markers (if present)
     if (sectionName.includes('education')) {
-      const ok = buildEducationByColon(container);
-      if (ok) return;
+      if (buildEducationByColon(container) === true) return;
+      // Fallback: bold school line and group following details without changing wording
+      formatEducationSchools(container);
+      return;
     }
 
     nodes.forEach(node => {
@@ -358,10 +405,7 @@
         const name = (title.textContent || '').trim().toLowerCase();
         if (name === 'education' || name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
           const container = sec.querySelector('.resume-details');
-          // Do not regroup Education: preserve exact wording
-          if (name !== 'education') {
-            buildEntries(container, name);
-          }
+          buildEntries(container, name);
         }
       });
 
