@@ -126,6 +126,11 @@
       if (node.tagName === 'UL') {
         const li = node.querySelector('li');
         const headerText = (li && li.textContent) ? li.textContent.trim() : '';
+        // Split header into school name and trailing location using dotted leaders or ellipses
+        const parts = headerText.split(/\s*[\.\u2026]+\s*/).filter(Boolean);
+        const schoolName = parts.length ? parts[0].trim() : headerText;
+        const trailing = parts.length > 1 ? parts.slice(1).join(' ').trim() : '';
+
         const art = document.createElement('article');
         art.className = 'entry';
         const header = document.createElement('div');
@@ -133,12 +138,18 @@
         const h3 = document.createElement('h3');
         h3.className = 'entry__title';
         const strong = document.createElement('strong');
-        strong.textContent = headerText;
+        strong.textContent = schoolName;
         h3.appendChild(strong);
         header.appendChild(h3);
         art.appendChild(header);
+
         const body = document.createElement('div');
         body.className = 'entry__body';
+        if (trailing) {
+          const pLoc = document.createElement('p');
+          pLoc.textContent = trailing;
+          body.appendChild(pLoc);
+        }
         // collect following siblings until next UL or end
         let j = i + 1;
         while (j < nodes.length && nodes[j].tagName !== 'UL') {
