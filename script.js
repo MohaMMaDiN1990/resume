@@ -10,8 +10,9 @@
 
   const DATE_RE = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}|\b\d{4}\b|\b\d{4}\s*[–-]\s*(present|\d{4})/i;
   const ORG_RE = /(Engineer|Supervisor|University|High School|Technical|Institute|Center|College|Company|Oil|Gas|Production|Department|Units|Co\.)/i;
+  const LOCATION_RE = /([A-Za-z\-\s]+,\s*[A-Za-z\-\s]+)$/;
 
-  function buildEntries(container, isEducation) {
+  function buildEntries(container, sectionName) {
     const nodes = Array.from(container.children);
     const entries = [];
     let entry = null;
@@ -22,7 +23,7 @@
         const liText = li ? li.textContent.trim() : '';
         if (liText && ORG_RE.test(liText)) {
           if (entry) entries.push(entry);
-          entry = { title: liText, meta: '', body: [] };
+          entry = { title: liText, date: '', location: '', body: [] };
           return;
         }
         if (entry && li) {
@@ -38,9 +39,23 @@
         if (!entry) return;
         const dateMatch = raw.match(DATE_RE);
         let text = raw;
-        if (!entry.meta && dateMatch) {
-          entry.meta = dateMatch[0];
-          text = raw.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+        if (!entry.date && dateMatch) {
+          entry.date = dateMatch[0];
+          text = text.replace(dateMatch[0], '').replace(/[–-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+        }
+        if (!entry.location) {
+          const locMatch = text.match(LOCATION_RE);
+          if (locMatch) {
+            entry.location = locMatch[0].trim();
+            text = text.replace(LOCATION_RE, '').trim();
+          } else if (/Iran/i.test(text)) {
+            entry.location = text;
+            text = '';
+          }
+        }
+        if (text && ORG_RE.test(text) && sectionName.includes('industry')) {
+          entry.title = (entry.title + ' ' + text).replace(/\s{2,}/g, ' ').trim();
+          return;
         }
         if (text) entry.body.push(text);
       }
@@ -60,7 +75,10 @@
         h3.textContent = e.title;
         const span = document.createElement('span');
         span.className = 'entry__meta';
-        span.textContent = e.meta;
+        const metaParts = [];
+        if (e.location) metaParts.push(e.location);
+        if (e.date) metaParts.push(e.date);
+        span.textContent = metaParts.join(' — ');
         header.appendChild(h3);
         header.appendChild(span);
         art.appendChild(header);
@@ -85,6 +103,40 @@
         container.appendChild(art);
       });
     }
+  }
+
+  function splitTechnicalSkills() {
+    const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+    sections.forEach(sec => {
+      const titleEl = sec.querySelector('.resume-title');
+      const title = (titleEl?.textContent || '').trim().toLowerCase();
+      if (!['programming languages', 'skills', 'technical skills'].includes(title)) return;
+      const details = sec.querySelector('.resume-details');
+      if (!details) return;
+      const marker = Array.from(details.querySelectorAll('p')).find(p => (p.textContent || '').trim().toLowerCase() === 'technical skills' || (p.textContent || '').trim() === 'TECHNICAL SKILLS');
+      if (!marker) return;
+      const newSection = document.createElement('section');
+      newSection.className = 'resume-section';
+      newSection.setAttribute('data-level', '1');
+      const h2 = document.createElement('h2');
+      h2.className = 'resume-title';
+      h2.setAttribute('tabindex', '0');
+      h2.textContent = 'Technical Skills';
+      const newDetails = document.createElement('div');
+      newDetails.className = 'resume-details';
+      let node = marker.nextSibling;
+      marker.remove();
+      const toMove = [];
+      while (node) {
+        const next = node.nextSibling;
+        if (node.nodeType === 1) toMove.push(node);
+        node = next;
+      }
+      toMove.forEach(n => newDetails.appendChild(n));
+      newSection.appendChild(h2);
+      newSection.appendChild(newDetails);
+      sec.parentNode.insertBefore(newSection, sec.nextSibling);
+    });
   }
 
   // Load converted sections
@@ -112,8 +164,11 @@
         });
       });
 
-      // Click-to-toggle
-      const sections = resumeRoot.querySelectorAll('.resume-section');
+      // Split Programming Languages -> Technical Skills section
+      splitTechnicalSkills();
+
+      // Click-to-toggle and grouping
+      const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
       sections.forEach(sec => {
         sec.setAttribute('aria-expanded', 'false');
         const title = sec.querySelector('.resume-title');
@@ -132,9 +187,16 @@
         const name = (title.textContent || '').trim().toLowerCase();
         if (name === 'education' || name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
           const container = sec.querySelector('.resume-details');
-          buildEntries(container, name === 'education');
+          buildEntries(container, name);
         }
       });
+
+      // Move Teaching Experience before Industry Experience
+      const teach = sections.find(s => (s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase() === 'teaching experience');
+      const industry = sections.find(s => ['industry experience', 'work experience', 'professional experience'].includes((s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase()));
+      if (teach && industry && teach.compareDocumentPosition(industry) & Node.DOCUMENT_POSITION_FOLLOWING) {
+        resumeRoot.insertBefore(teach, industry);
+      }
     })
     .catch(() => {});
 
