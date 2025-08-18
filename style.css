@@ -96,7 +96,7 @@ body {
 #resume-root {
   margin-top: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -149,8 +149,8 @@ body {
 /* Contact list beside name */
 .hero__contacts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(200px, 1fr));
-  gap: 6px 18px;
+  grid-template-columns: 1fr;
+  gap: 8px;
   list-style: none;
   padding: 8px 0 0 0;
   margin: 0 0 4px 0;
@@ -211,6 +211,12 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
   .resume-section { border-width: 1px; }
+}
+
+@media (min-width: 1200px) {
+  #resume-root {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 
