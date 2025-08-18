@@ -31,11 +31,11 @@ body {
 }
 
 #app {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 24px;
   display: grid;
-  grid-template-columns: minmax(280px, 340px) 1fr;
+  grid-template-columns: minmax(320px, 400px) 1fr;
   gap: 24px;
   min-height: 100vh;
   align-items: stretch;
@@ -52,8 +52,11 @@ body {
   box-shadow: var(--shadow);
   transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.15s ease-out, background 0.2s linear;
-  height: 100%;
   justify-content: space-between;
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  min-height: calc(100vh - 48px);
 }
 
 .hero__name {
@@ -208,6 +211,8 @@ body {
   }
   .hero {
     text-align: center;
+    position: static;
+    min-height: auto;
   }
   .hero__photo { 
     align-self: center;
