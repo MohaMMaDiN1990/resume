@@ -35,7 +35,7 @@ body {
   margin: 0 auto;
   padding: 24px;
   display: grid;
-  grid-template-columns: minmax(260px, 320px) 1fr;
+  grid-template-columns: minmax(280px, 340px) 1fr;
   gap: 24px;
 }
 
@@ -213,7 +213,7 @@ body {
   .resume-section { border-width: 1px; }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1400px) {
   #resume-root {
     grid-template-columns: 1fr 1fr;
   }
