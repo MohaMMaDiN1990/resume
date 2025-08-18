@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Fix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .test-frame {
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .test-frame h3 {
+            background: #dc3545;
+            color: white;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+        }
+        .desktop { height: 600px; }
+        .instructions {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .instructions h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Verify Fix</h1>
+    
+    <div class="instructions">
+        <h3>🎯 Test Instructions</h3>
+        <ol>
+            <li><strong>Check Initial State:</strong> All sections should be COLLAPSED (only titles visible)</li>
+            <li><strong>Test Hover:</strong> Hover over section titles - should see visual feedback but NO content expansion</li>
+            <li><strong>Test Click:</strong> Click a section title - content should expand</li>
+            <li><strong>Test Click Again:</strong> Click same title - content should collapse</li>
+            <li><strong>Verify Arrows:</strong> ▼ when collapsed, ▲ when expanded</li>
+        </ol>
+    </div>
+    
+    <div class="test-frame">
+        <h3>💻 Desktop Test (1200px width)</h3>
+        <iframe src="index.html" class="desktop" style="width: 1200px;"></iframe>
+    </div>
+    
+    <div class="instructions">
+        <h3>❌ If Still Not Working</h3>
+        <p>The issue might be:</p>
+        <ul>
+            <li>CSS not loading properly</li>
+            <li>JavaScript errors</li>
+            <li>Conflicting CSS rules</li>
+            <li>Browser cache issues</li>
+        </ul>
+        <p><strong>Check browser console for errors!</strong></p>
+    </div>
+</body>
+</html>

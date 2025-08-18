@@ -410,7 +410,7 @@
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
       sections.forEach(sec => {
-        // ALL sections start collapsed on ALL devices
+        // CRITICAL: ALL sections start COLLAPSED on ALL devices
         sec.setAttribute('aria-expanded', 'false');
         
         const title = sec.querySelector('.resume-title');
@@ -456,7 +456,7 @@
           }
         });
         
-        // Add hover effects for desktop (visual feedback only, no content expansion)
+        // Add hover effects for desktop (visual feedback only, NO content expansion)
         if (!isMobile) {
           sec.addEventListener('mouseenter', () => {
             if (sec.getAttribute('aria-expanded') !== 'true') {
