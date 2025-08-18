@@ -228,11 +228,19 @@ body {
   #resume-root {
     /* Keep single-column to increase vertical length on laptops */
     grid-template-columns: 1fr;
-    min-height: auto;
+    min-height: calc(400vh - 48px);
+    gap: 24px;
+    padding-bottom: 48px;
+    position: relative;
   }
-  #resume-root::after { content: none; height: 0; }
+  #resume-root::after {
+    content: "";
+    display: block;
+    height: 300vh;
+  }
   /* Expand all details on larger screens to significantly increase right column length */
   .resume-details { display: block; }
+  .resume-section { padding: 20px 22px; }
 }
 
 
