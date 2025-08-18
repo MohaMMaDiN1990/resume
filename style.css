@@ -145,7 +145,7 @@ body {
   margin: 0 0 10px 18px;
 }
 
-/* Contact list beside name */
+/* Contact list beside name - DESKTOP LAYOUT (preserved) */
 .hero__contacts {
   display: grid;
   grid-template-columns: repeat(2, minmax(200px, 1fr));
@@ -501,11 +501,10 @@ body {
   }
 }
 
-/* Mobile-specific optimizations */
+/* Mobile-specific optimizations - ONLY for mobile devices */
 @media (max-width: 768px) {
   /* Improve touch targets */
-  .resume-title,
-  .hero__contacts a {
+  .resume-title {
     min-height: 44px;
     display: flex;
     align-items: center;
@@ -535,10 +534,9 @@ body {
     border-radius: 8px;
   }
   
-  /* Hero section mobile improvements */
+  /* Hero section mobile improvements - ONLY for mobile */
   .hero__contacts a {
     padding: 8px 0;
-    display: block;
     min-height: 44px;
     display: flex;
     align-items: center;
@@ -554,8 +552,8 @@ body {
     outline-offset: 2px;
     border-radius: 4px;
   }
-
-  /* Better mobile hero layout */
+  
+  /* Better mobile hero layout - ONLY for mobile */
   .hero__text {
     display: flex;
     flex-direction: column;

@@ -14,9 +14,16 @@ A modern, responsive, and interactive resume website built with HTML, CSS, and J
 ## 🚀 Mobile Responsiveness Features
 
 ### Responsive Breakpoints
-- **Mobile**: ≤768px - Single column layout, touch-optimized
-- **Tablet**: 769px-1024px - Optimized spacing and sizing
-- **Desktop**: ≥1025px - Full two-column layout with enhanced effects
+- **Desktop (≥1025px)**: 2-column layout, photo right (220px), contact grid, full effects
+- **Tablet (769px-1024px)**: 2-column layout, photo right (180px), contact grid
+- **Mobile (≤768px)**: Single column layout, photo top, contact stack, touch-optimized
+
+### Desktop Layout (Preserved)
+- ✅ **2-column hero section**: Text on left, photo on right
+- ✅ **Contact grid**: 2-column contact information layout
+- ✅ **Photo effects**: Mouse movement effects and rotation
+- ✅ **Original spacing**: Preserved padding and margins
+- ✅ **Typography**: Original font sizes and spacing
 
 ### Mobile Optimizations
 - ✅ Touch-friendly buttons (44px minimum touch targets)
