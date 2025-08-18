@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Responsiveness Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .device-test {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .device-test iframe {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .mobile { width: 375px; height: 667px; }
+        .tablet { width: 768px; height: 1024px; }
+        .desktop { width: 1200px; height: 800px; }
+    </style>
+</head>
+<body>
+    <h1>Mobile Responsiveness Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Your Resume Site on Different Screen Sizes</h2>
+        <p>Use these iframes to test how your resume site looks on different devices:</p>
+        
+        <div class="device-test">
+            <h3>Mobile (375x667)</h3>
+            <iframe src="index.html" class="mobile"></iframe>
+        </div>
+        
+        <div class="device-test">
+            <h3>Tablet (768x1024)</h3>
+            <iframe src="index.html" class="tablet"></iframe>
+        </div>
+        
+        <div class="device-test">
+            <h3>Desktop (1200x800)</h3>
+            <iframe src="index.html" class="desktop"></iframe>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Mobile Testing Checklist</h2>
+        <ul>
+            <li>✅ Responsive layout on small screens</li>
+            <li>✅ Touch-friendly buttons and links</li>
+            <li>✅ Proper text sizing for mobile</li>
+            <li>✅ Optimized spacing and padding</li>
+            <li>✅ Mobile-friendly navigation</li>
+            <li>✅ Proper viewport meta tags</li>
+            <li>✅ Touch event handling</li>
+            <li>✅ Mobile-optimized CSS</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>How to Test on Real Devices</h2>
+        <ol>
+            <li>Open your site on a smartphone or tablet</li>
+            <li>Test touch interactions (tapping sections)</li>
+            <li>Check scrolling behavior</li>
+            <li>Verify text readability</li>
+            <li>Test different orientations (portrait/landscape)</li>
+            <li>Check loading performance</li>
+        </ol>
+    </div>
+</body>
+</html>

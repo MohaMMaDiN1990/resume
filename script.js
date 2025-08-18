@@ -1,9 +1,14 @@
 (function () {
-  const VERSION = '2025-08-17-6';
+  const VERSION = '2025-08-17-7';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
   const yearEl = document.getElementById('year');
+
+  // Detect if device is mobile/touch
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                   ('ontouchstart' in window) || 
+                   (navigator.maxTouchPoints > 0);
 
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
@@ -103,8 +108,7 @@
           const li = document.createElement('li');
           li.textContent = b.text;
           ul.appendChild(li);
-        } else {
-          ul = null;
+        } else if (b.type === 'p') {
           const p = document.createElement('p');
           p.textContent = b.text;
           body.appendChild(p);
@@ -113,7 +117,6 @@
       art.appendChild(body);
       container.appendChild(art);
     });
-    return true;
   }
 
   function formatEducationSchools(container) {
@@ -410,14 +413,23 @@
         sec.setAttribute('aria-expanded', 'false');
         const title = sec.querySelector('.resume-title');
         if (!title) return;
-        title.addEventListener('click', () => {
+        
+        // Handle both click and touch events
+        const handleToggle = () => {
           const expanded = sec.getAttribute('aria-expanded') === 'true';
           sec.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        };
+        
+        title.addEventListener('click', handleToggle);
+        title.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          handleToggle();
         });
+        
         title.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            title.click();
+            handleToggle();
           }
         });
 
@@ -490,8 +502,10 @@
     })
     .catch(() => {});
 
-  // Mouse move driven styling
+  // Mouse move driven styling - only on non-mobile devices
   function onMouseMove(e) {
+    if (isMobile) return; // Disable on mobile
+    
     const rect = app.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width; // 0..1
     const y = (e.clientY - rect.top) / rect.height; // 0..1
@@ -508,5 +522,37 @@
     root.style.setProperty('--tilt', tilt);
   }
 
-  window.addEventListener('mousemove', onMouseMove, { passive: true });
+  // Touch event handling for mobile
+  function onTouchMove(e) {
+    if (!isMobile) return;
+    
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      const rect = app.getBoundingClientRect();
+      const x = (touch.clientX - rect.left) / rect.width;
+      const y = (touch.clientY - rect.top) / rect.height;
+      
+      // Subtle mobile effects
+      const hue = Math.round(200 + 80 * x);
+      root.style.setProperty('--hue', String(hue));
+      root.style.setProperty('--bgx', (x * 100).toFixed(1) + '%');
+      root.style.setProperty('--bgy', (y * 100).toFixed(1) + '%');
+    }
+  }
+
+  // Add event listeners based on device type
+  if (isMobile) {
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    // Disable mouse effects on mobile
+    root.style.setProperty('--rx', '0deg');
+    root.style.setProperty('--ry', '0deg');
+    root.style.setProperty('--tilt', '0deg');
+  } else {
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+  }
+
+  // Add touch-friendly scrolling for mobile
+  if (isMobile) {
+    document.addEventListener('touchstart', function() {}, { passive: true });
+  }
 })();
