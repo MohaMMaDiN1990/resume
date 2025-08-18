@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Hero Section Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .test-info {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .test-frame {
+            border: 2px solid #007acc;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .test-frame h3 {
+            background: #007acc;
+            color: white;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+        }
+        .mobile { height: 600px; }
+        .small-mobile { height: 500px; }
+        .checklist {
+            background: #f0f8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .checklist h3 {
+            color: #2d5a2d;
+            margin-top: 0;
+        }
+        .checklist ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .checklist li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mobile Hero Section Test</h1>
+    
+    <div class="test-info">
+        <h2>🎯 Testing the Hero Section on Mobile</h2>
+        <p>This page tests how the hero section (top section with photo and contact info) looks on different mobile screen sizes.</p>
+    </div>
+    
+    <div class="test-frame">
+        <h3>📱 Standard Mobile (375px width)</h3>
+        <iframe src="index.html" class="mobile" style="width: 375px;"></iframe>
+    </div>
+    
+    <div class="test-frame">
+        <h3>📱 Small Mobile (320px width)</h3>
+        <iframe src="index.html" class="small-mobile" style="width: 320px;"></iframe>
+    </div>
+    
+    <div class="checklist">
+        <h3>✅ Hero Section Mobile Checklist</h3>
+        <ul>
+            <li><strong>Photo:</strong> Should be centered and properly sized (120px on mobile, 100px on small mobile)</li>
+            <li><strong>Name:</strong> Should be centered and readable (24px on mobile, 22px on small mobile)</li>
+            <li><strong>Contact Info:</strong> Should be stacked vertically with proper spacing</li>
+            <li><strong>Touch Targets:</strong> All links should be at least 44px tall for easy tapping</li>
+            <li><strong>Spacing:</strong> Proper margins and padding for mobile viewing</li>
+            <li><strong>Text:</strong> All text should be readable without zooming</li>
+            <li><strong>Layout:</strong> Single column layout on mobile devices</li>
+        </ul>
+    </div>
+    
+    <div class="test-info">
+        <h2>🔧 What Was Fixed</h2>
+        <ul>
+            <li>Hero section now uses single column layout on mobile</li>
+            <li>Photo is properly centered and sized for mobile</li>
+            <li>Contact information is stacked vertically with proper spacing</li>
+            <li>Touch targets are properly sized (44px minimum)</li>
+            <li>Text is properly sized and readable on mobile</li>
+            <li>Spacing and margins are optimized for mobile</li>
+            <li>Address text wraps properly on small screens</li>
+        </ul>
+    </div>
+    
+    <div class="test-info">
+        <h2>📱 Test on Real Devices</h2>
+        <p>For the best test results:</p>
+        <ol>
+            <li>Open this page on your smartphone</li>
+            <li>Navigate to your resume site</li>
+            <li>Check that the hero section looks good</li>
+            <li>Test tapping on contact links</li>
+            <li>Verify text is readable without zooming</li>
+        </ol>
+    </div>
+</body>
+</html>
