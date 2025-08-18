@@ -5,6 +5,28 @@
   const resumeRoot = document.getElementById('resume-root');
   const yearEl = document.getElementById('year');
 
+  // Welcome window functionality
+  function closeWelcome() {
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    if (welcomeOverlay) {
+      welcomeOverlay.classList.add('hidden');
+      setTimeout(() => {
+        welcomeOverlay.style.display = 'none';
+      }, 500);
+    }
+  }
+
+  // Make closeWelcome globally accessible
+  window.closeWelcome = closeWelcome;
+
+  // Auto-hide welcome window after 8 seconds if user doesn't interact
+  setTimeout(() => {
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    if (welcomeOverlay && !welcomeOverlay.classList.contains('hidden')) {
+      closeWelcome();
+    }
+  }, 8000);
+
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
