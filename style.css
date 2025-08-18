@@ -130,6 +130,11 @@ body {
   background: linear-gradient(135deg, var(--card-bg) 0%, hsl(var(--hue), 65%, 99%) 100%);
 }
 
+/* Ensure hover never expands content on any device */
+.resume-section:hover .resume-details {
+  display: none !important;
+}
+
 .resume-title {
   margin: 0;
   font-size: clamp(18px, 2.4vw, 22px);
@@ -184,13 +189,10 @@ body {
   display: block;
 }
 
-/* Desktop: sections start collapsed, mobile: sections start open */
+/* ALL DEVICES: sections start collapsed, hover shows visual feedback only */
+
+/* Desktop: sections start collapsed, mobile: sections start collapsed */
 @media (min-width: 769px) {
-  .resume-section:hover .resume-details {
-    display: none; /* Disable hover expansion on desktop */
-  }
-  
-  /* Desktop sections start collapsed - add visual cues */
   .resume-section {
     cursor: pointer;
   }
@@ -212,17 +214,12 @@ body {
 }
 
 @media (max-width: 768px) {
-  .resume-section:hover .resume-details {
-    display: block; /* Keep hover expansion on mobile */
-  }
-  
-  /* On mobile, show details by default for better UX */
+  /* On mobile, sections also start collapsed */
   .resume-details {
-    display: block;
-    margin-top: 12px;
+    display: none;
   }
   
-  /* Ensure mobile sections that start open show correct arrow state */
+  /* Ensure mobile sections that start collapsed show correct arrow state */
   .resume-section[aria-expanded="true"] .resume-title::after {
     transform: rotate(180deg) !important;
     opacity: 1 !important;
@@ -675,6 +672,7 @@ body {
   .resume-section {
     margin-bottom: 8px;
     transition: all 0.2s ease;
+    cursor: pointer;
   }
   
   .resume-section:active {
@@ -685,6 +683,22 @@ body {
     font-size: 16px;
     min-width: 20px;
     text-align: center;
+  }
+  
+  /* Mobile sections start collapsed - ensure proper styling */
+  .resume-details {
+    display: none;
+  }
+  
+  /* Ensure mobile sections that start collapsed show correct arrow state */
+  .resume-section[aria-expanded="true"] .resume-title::after {
+    transform: rotate(180deg) !important;
+    opacity: 1 !important;
+  }
+  
+  /* Remove hover effects on mobile */
+  .resume-section:hover {
+    transform: none;
   }
   
   /* Mobile-optimized job titles */

@@ -410,9 +410,8 @@
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
       sections.forEach(sec => {
-        // Set initial state based on device type
-        const initialState = isMobile ? 'true' : 'false';
-        sec.setAttribute('aria-expanded', initialState);
+        // ALL sections start collapsed on ALL devices
+        sec.setAttribute('aria-expanded', 'false');
         
         const title = sec.querySelector('.resume-title');
         if (!title) return;
@@ -457,7 +456,7 @@
           }
         });
         
-        // Add hover effects for desktop
+        // Add hover effects for desktop (visual feedback only, no content expansion)
         if (!isMobile) {
           sec.addEventListener('mouseenter', () => {
             if (sec.getAttribute('aria-expanded') !== 'true') {

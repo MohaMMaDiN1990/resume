@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exact Behavior Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .test-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .behavior-list {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .behavior-list h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        .behavior-list ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .behavior-list li {
+            margin: 12px 0;
+            padding: 8px 0;
+        }
+        .test-frame {
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .test-frame h3 {
+            background: #28a745;
+            color: white;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+        }
+        .desktop { height: 700px; }
+        .mobile { height: 600px; }
+        .verification {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .verification h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        .verification ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .verification li {
+            margin: 8px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .highlight h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>✅ Exact Behavior Test</h1>
+        <p>Verifying the precise behavior you requested for all sections</p>
+    </div>
+    
+    <div class="behavior-list">
+        <h3>🎯 Exact Behavior Required</h3>
+        <ol>
+            <li><strong>First Visit:</strong> Only section titles visible (ALL sections collapsed)</li>
+            <li><strong>Hover:</strong> Section box makes visual interaction (NO content expansion)</li>
+            <li><strong>Click:</strong> Section details open/expand</li>
+            <li><strong>Click Again:</strong> Section details close/collapse</li>
+            <li><strong>Mobile:</strong> Same behavior as desktop (sections start collapsed)</li>
+        </ol>
+    </div>
+    
+    <div class="test-frame">
+        <h3>💻 Desktop Test (1200px width)</h3>
+        <iframe src="index.html" class="desktop" style="width: 1200px;"></iframe>
+    </div>
+    
+    <div class="test-frame">
+        <h3>📱 Mobile Test (375px width)</h3>
+        <iframe src="index.html" class="mobile" style="width: 375px;"></iframe>
+    </div>
+    
+    <div class="verification">
+        <h3>✅ Verification Checklist</h3>
+        <ul>
+            <li><strong>Initial State:</strong> All sections start COLLAPSED (content hidden)</li>
+            <li><strong>Arrow Indicators:</strong> Show ▼ (down arrow) for collapsed state</li>
+            <li><strong>Hover Effect:</strong> Section box responds visually but content stays hidden</li>
+            <li><strong>Click to Expand:</strong> Click any section title to show content</li>
+            <li><strong>Click to Collapse:</strong> Click again to hide content</li>
+            <li><strong>Arrow Changes:</strong> ▲ when expanded, ▼ when collapsed</li>
+            <li><strong>Mobile Same:</strong> Mobile behaves exactly like desktop</li>
+        </ul>
+    </div>
+    
+    <div class="highlight">
+        <h4>🔧 What Was Implemented</h4>
+        <ul>
+            <li><strong>Universal Collapsed State:</strong> ALL sections start collapsed on ALL devices</li>
+            <li><strong>Hover Prevention:</strong> Hover never expands content, only shows visual feedback</li>
+            <li><strong>Click Control:</strong> Only clicking expands/collapses sections</li>
+            <li><strong>Consistent Behavior:</strong> Desktop and mobile work identically</li>
+            <li><strong>Visual Feedback:</strong> Hover shows enhanced styling without content expansion</li>
+            <li><strong>Arrow Indicators:</strong> Clear visual state (▼ collapsed, ▲ expanded)</li>
+        </ul>
+    </div>
+    
+    <div class="verification">
+        <h3>🎮 How to Test</h3>
+        <ol>
+            <li><strong>Check Initial State:</strong> All sections should be collapsed with ▼ arrows</li>
+            <li><strong>Test Hover:</strong> Hover over section titles - should see visual feedback but NO content</li>
+            <li><strong>Test Click:</strong> Click a section title - content should expand, arrow becomes ▲</li>
+            <li><strong>Test Click Again:</strong> Click same title - content should collapse, arrow becomes ▼</li>
+            <li><strong>Test Mobile:</strong> Switch to mobile view - should behave identically</li>
+        </ol>
+    </div>
+</body>
+</html>
