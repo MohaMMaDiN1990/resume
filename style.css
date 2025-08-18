@@ -34,7 +34,7 @@ body {
 }
 
 #app {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 16px;
 }
@@ -42,7 +42,7 @@ body {
 /* Hero section - Desktop layout (base styles) */
 .hero {
   display: grid;
-  grid-template-columns: 1fr 200px;
+  grid-template-columns: 1fr 300px;
   gap: 24px;
   align-items: center;
   background: var(--card-bg);
@@ -73,11 +73,14 @@ body {
 
 .hero__photo {
   justify-self: end;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .hero__photo img {
   display: block;
-  width: min(200px, 40vw);
+  width: 280px;
   height: auto;
   border-radius: 12px;
   box-shadow: var(--shadow);
@@ -452,12 +455,12 @@ body {
   }
   
   .hero {
-    grid-template-columns: 1fr 180px !important;
+    grid-template-columns: 1fr 250px !important;
     gap: 20px !important;
   }
   
   .hero__photo img {
-    width: 180px !important;
+    width: 230px !important;
   }
   
   #resume-root {
@@ -468,17 +471,39 @@ body {
 /* Large screen optimizations */
 @media (min-width: 1025px) {
   .hero {
-    grid-template-columns: 1fr 220px !important;
+    grid-template-columns: 1fr 300px !important;
     gap: 32px !important;
     padding: 32px !important;
   }
   
   .hero__photo img {
-    width: 220px !important;
+    width: 280px !important;
   }
   
   #resume-root {
     gap: 24px;
+  }
+}
+
+/* Extra large screen optimizations */
+@media (min-width: 1400px) {
+  #app {
+    max-width: 1400px;
+    padding: 20px;
+  }
+  
+  .hero {
+    grid-template-columns: 1fr 350px !important;
+    gap: 40px !important;
+    padding: 40px !important;
+  }
+  
+  .hero__photo img {
+    width: 320px !important;
+  }
+  
+  #resume-root {
+    gap: 30px;
   }
 }
 
