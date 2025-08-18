@@ -94,7 +94,7 @@ body {
   padding: 24px 8px 8px;
 }
 
-/* Resume sections - EXACT BEHAVIOR IMPLEMENTATION */
+/* Resume sections - Simple working version */
 #resume-root {
   margin-top: 24px;
   display: grid;
@@ -114,31 +114,22 @@ body {
   overflow: hidden;
 }
 
-/* HOVER EFFECTS - Visual feedback only, NO content expansion */
 .resume-section:hover {
   transform: translateY(-4px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
   border-color: var(--accent);
-  background: linear-gradient(135deg, var(--card-bg) 0%, hsl(var(--hue), 65%, 99%) 100%);
 }
 
 .resume-section:active {
   transform: translateY(-2px);
 }
 
-/* EXPANDED STATE - Only when aria-expanded="true" */
 .resume-section[aria-expanded="true"] {
   border-color: var(--accent);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
   background: linear-gradient(135deg, var(--card-bg) 0%, hsl(var(--hue), 65%, 99%) 100%);
 }
 
-/* CRITICAL: Hover NEVER expands content on ANY device */
-.resume-section:hover .resume-details {
-  display: none !important;
-}
-
-/* Section titles */
 .resume-title {
   margin: 0;
   font-size: clamp(18px, 2.4vw, 22px);
@@ -157,7 +148,6 @@ body {
   justify-content: space-between;
 }
 
-/* Arrow indicator - shows collapsed state by default */
 .resume-title::after {
   content: '▼';
   font-size: 14px;
@@ -166,7 +156,6 @@ body {
   opacity: 0.7;
 }
 
-/* Arrow indicator - shows expanded state when open */
 .resume-section[aria-expanded="true"] .resume-title::after {
   transform: rotate(180deg);
   opacity: 1;
@@ -182,7 +171,6 @@ body {
   border-radius: 6px;
 }
 
-/* Section content - HIDDEN by default on ALL devices */
 .resume-details {
   display: none;
   margin-top: 12px;
@@ -192,12 +180,10 @@ body {
   padding-top: 12px;
 }
 
-/* Section content - ONLY visible when explicitly expanded */
 .resume-section[aria-expanded="true"] .resume-details {
   display: block;
 }
 
-/* Animation for content expansion */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -857,17 +843,3 @@ body {
   opacity: 1;
 }
 
-/* FINAL OVERRIDE: Ensure sections start collapsed on ALL devices */
-.resume-section .resume-details {
-  display: none !important;
-}
-
-/* ONLY show content when explicitly expanded */
-.resume-section[aria-expanded="true"] .resume-details {
-  display: block !important;
-}
-
-/* FINAL OVERRIDE: Hover NEVER expands content */
-.resume-section:hover .resume-details {
-  display: none !important;
-}

@@ -410,40 +410,20 @@
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
       sections.forEach(sec => {
-        // CRITICAL: ALL sections start COLLAPSED on ALL devices
+        // Set initial state - sections start collapsed
         sec.setAttribute('aria-expanded', 'false');
         
         const title = sec.querySelector('.resume-title');
         if (!title) return;
         
-        // Handle both click and touch events
+        // Simple click handler
         const handleToggle = (e) => {
           e.preventDefault();
-          e.stopPropagation();
           
           const expanded = sec.getAttribute('aria-expanded') === 'true';
           const newState = expanded ? 'false' : 'true';
           
-          // Add smooth transition
-          sec.style.transition = 'all 0.3s ease';
-          
-          // Update state
           sec.setAttribute('aria-expanded', newState);
-          
-          // Add visual feedback
-          if (newState === 'true') {
-            sec.style.transform = 'translateY(-2px)';
-            setTimeout(() => {
-              sec.style.transform = '';
-            }, 300);
-          }
-          
-          // Announce to screen readers
-          const sectionName = title.textContent.trim();
-          const status = newState === 'true' ? 'expanded' : 'collapsed';
-          if (sec.querySelector('[aria-live]')) {
-            sec.querySelector('[aria-live]').textContent = `${sectionName} section ${status}`;
-          }
         };
         
         title.addEventListener('click', handleToggle);
@@ -455,40 +435,6 @@
             handleToggle(e);
           }
         });
-        
-        // Add hover effects for desktop (visual feedback only, NO content expansion)
-        if (!isMobile) {
-          sec.addEventListener('mouseenter', () => {
-            if (sec.getAttribute('aria-expanded') !== 'true') {
-              sec.style.transform = 'translateY(-2px)';
-            }
-          });
-          
-          sec.addEventListener('mouseleave', () => {
-            if (sec.getAttribute('aria-expanded') !== 'true') {
-              sec.style.transform = '';
-            }
-          });
-        }
-        
-        // Add focus management
-        title.addEventListener('focus', () => {
-          sec.style.outline = '2px solid var(--accent)';
-          sec.style.outlineOffset = '2px';
-        });
-        
-        title.addEventListener('blur', () => {
-          sec.style.outline = '';
-          sec.style.outlineOffset = '';
-        });
-
-        const name = (title.textContent || '').trim().toLowerCase();
-        if (name === 'education') {
-          const container = sec.querySelector('.resume-details');
-          buildEntries(container, name);
-        } else if (name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
-          // Render exactly as converted; no transformation
-        }
       });
 
       // Move Teaching Experience before Industry Experience
