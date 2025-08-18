@@ -415,22 +415,69 @@
         if (!title) return;
         
         // Handle both click and touch events
-        const handleToggle = () => {
+        const handleToggle = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
           const expanded = sec.getAttribute('aria-expanded') === 'true';
-          sec.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          const newState = expanded ? 'false' : 'true';
+          
+          // Add smooth transition
+          sec.style.transition = 'all 0.3s ease';
+          
+          // Update state
+          sec.setAttribute('aria-expanded', newState);
+          
+          // Add visual feedback
+          if (newState === 'true') {
+            sec.style.transform = 'translateY(-2px)';
+            setTimeout(() => {
+              sec.style.transform = '';
+            }, 300);
+          }
+          
+          // Announce to screen readers
+          const sectionName = title.textContent.trim();
+          const status = newState === 'true' ? 'expanded' : 'collapsed';
+          if (sec.querySelector('[aria-live]')) {
+            sec.querySelector('[aria-live]').textContent = `${sectionName} section ${status}`;
+          }
         };
         
         title.addEventListener('click', handleToggle);
-        title.addEventListener('touchend', (e) => {
-          e.preventDefault();
-          handleToggle();
-        });
+        title.addEventListener('touchend', handleToggle);
         
+        // Add keyboard support
         title.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleToggle();
+            handleToggle(e);
           }
+        });
+        
+        // Add hover effects for desktop
+        if (!isMobile) {
+          sec.addEventListener('mouseenter', () => {
+            if (sec.getAttribute('aria-expanded') !== 'true') {
+              sec.style.transform = 'translateY(-2px)';
+            }
+          });
+          
+          sec.addEventListener('mouseleave', () => {
+            if (sec.getAttribute('aria-expanded') !== 'true') {
+              sec.style.transform = '';
+            }
+          });
+        }
+        
+        // Add focus management
+        title.addEventListener('focus', () => {
+          sec.style.outline = '2px solid var(--accent)';
+          sec.style.outlineOffset = '2px';
+        });
+        
+        title.addEventListener('blur', () => {
+          sec.style.outline = '';
+          sec.style.outlineOffset = '';
         });
 
         const name = (title.textContent || '').trim().toLowerCase();

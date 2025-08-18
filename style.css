@@ -107,11 +107,27 @@ body {
   border-radius: 12px;
   box-shadow: var(--shadow);
   padding: 16px 18px;
-  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .resume-section:hover {
   transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent);
+}
+
+.resume-section:active {
+  transform: translateY(-2px);
+}
+
+.resume-section[aria-expanded="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(135deg, var(--card-bg) 0%, hsl(var(--hue), 65%, 99%) 100%);
 }
 
 .resume-title {
@@ -125,6 +141,28 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  transition: all 0.2s ease;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resume-title::after {
+  content: '▼';
+  font-size: 14px;
+  color: var(--accent);
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+}
+
+.resume-section[aria-expanded="true"] .resume-title::after {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.resume-title:hover {
+  color: hsl(calc(var(--hue) + 30), 85%, 45%);
 }
 
 .resume-title:focus-visible {
@@ -135,21 +173,44 @@ body {
 
 .resume-details {
   display: none;
-  margin-top: 10px;
+  margin-top: 12px;
   color: hsl(220, 15%, 20%);
+  animation: slideDown 0.3s ease-out;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 12px;
 }
 
-.resume-section[aria-expanded="true"] .resume-details,
+.resume-section[aria-expanded="true"] .resume-details {
+  display: block;
+}
+
 .resume-section:hover .resume-details {
   display: block;
 }
 
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .resume-details p {
   margin: 0 0 10px 0;
+  line-height: 1.6;
 }
 
 .resume-details ul {
   margin: 0 0 10px 18px;
+  line-height: 1.6;
+}
+
+.resume-details li {
+  margin-bottom: 6px;
 }
 
 /* Contact list beside name - DESKTOP LAYOUT (preserved) */
@@ -538,7 +599,7 @@ body {
     min-height: 44px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
   
   /* Better mobile spacing */
@@ -562,6 +623,40 @@ body {
   .resume-section {
     border-width: 1px;
     border-radius: 8px;
+  }
+  
+  /* Enhanced mobile section interactions */
+  .resume-section {
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .resume-section:active {
+    transform: scale(0.98);
+  }
+  
+  .resume-title::after {
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+  }
+  
+  /* Mobile-optimized job titles */
+  .resume-details strong[style*="font-size: 1.5em"] {
+    font-size: 16px !important;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+  }
+  
+  /* Mobile list improvements */
+  .resume-details li {
+    margin-bottom: 6px;
+    padding: 3px 0;
+  }
+  
+  .resume-details li::before {
+    left: -16px;
+    font-size: 12px;
   }
   
   /* Hero section mobile improvements - ONLY for mobile */
@@ -672,4 +767,65 @@ body {
   .hero__contacts li {
     padding: 4px 0 !important;
   }
+}
+
+/* Special styling for job entries and important content */
+.resume-details strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.resume-details strong[style*="font-size: 1.5em"] {
+  display: block;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, hsl(calc(var(--hue) + 30), 70%, 60%) 100%);
+  color: white;
+  border-radius: 6px;
+  font-size: 18px !important;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced list styling */
+.resume-details ul {
+  margin: 0 0 10px 18px;
+  line-height: 1.6;
+}
+
+.resume-details li {
+  margin-bottom: 8px;
+  padding: 4px 0;
+  position: relative;
+}
+
+.resume-details li::before {
+  content: '▸';
+  color: var(--accent);
+  font-weight: bold;
+  position: absolute;
+  left: -18px;
+  opacity: 0.8;
+}
+
+/* Section-specific enhancements */
+.resume-section[data-level="1"] {
+  position: relative;
+}
+
+.resume-section[data-level="1"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, hsl(calc(var(--hue) + 30), 70%, 60%) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.resume-section[data-level="1"]:hover::before,
+.resume-section[data-level="1"][aria-expanded="true"]::before {
+  opacity: 1;
 }
