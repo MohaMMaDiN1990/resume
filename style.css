@@ -226,17 +226,11 @@ body {
 
 @media (min-width: 901px) {
   #resume-root {
-    grid-template-columns: 1fr 1fr;
-    /* Stretch right content significantly on laptops/desktops */
-    min-height: calc(300vh - 48px);
-    position: relative;
+    /* Keep single-column to increase vertical length on laptops */
+    grid-template-columns: 1fr;
+    min-height: auto;
   }
-  /* Add extra bottom space beyond content to visibly extend right column */
-  #resume-root::after {
-    content: "";
-    display: block;
-    height: 250vh;
-  }
+  #resume-root::after { content: none; height: 0; }
 }
 
 
