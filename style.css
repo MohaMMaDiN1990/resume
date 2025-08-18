@@ -37,6 +37,8 @@ body {
   display: grid;
   grid-template-columns: minmax(280px, 340px) 1fr;
   gap: 24px;
+  min-height: 100vh;
+  align-items: stretch;
 }
 
 .hero {
@@ -50,6 +52,8 @@ body {
   box-shadow: var(--shadow);
   transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.15s ease-out, background 0.2s linear;
+  height: 100%;
+  justify-content: space-between;
 }
 
 .hero__name {
@@ -96,8 +100,10 @@ body {
 #resume-root {
   margin-top: 0;
   display: grid;
+  grid-auto-rows: minmax(min-content, auto);
   grid-template-columns: 1fr;
   gap: 16px;
+  align-content: start;
 }
 
 .resume-section {
