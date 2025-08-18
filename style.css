@@ -229,6 +229,13 @@ body {
     grid-template-columns: 1fr 1fr;
     /* Stretch right content vertically to be about twice current length */
     min-height: calc(200vh - 48px);
+    position: relative;
+  }
+  /* Add extra bottom space beyond content to visibly extend right column */
+  #resume-root::after {
+    content: "";
+    display: block;
+    height: 150vh;
   }
 }
 
