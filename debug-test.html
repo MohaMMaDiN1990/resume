@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - Resume Sections</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .debug-info h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        .test-frame {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .test-frame h3 {
+            background: #007bff;
+            color: white;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+            height: 600px;
+        }
+        .console-output {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Test - Resume Sections</h1>
+    
+    <div class="debug-info">
+        <h3>🎯 What We're Testing</h3>
+        <ul>
+            <li>JavaScript loading and execution</li>
+            <li>Resume content loading from converted.html</li>
+            <li>Click-to-toggle functionality</li>
+            <li>Console errors or warnings</li>
+        </ul>
+    </div>
+    
+    <div class="test-frame">
+        <h3>📄 Main Resume Page</h3>
+        <iframe src="index.html"></iframe>
+    </div>
+    
+    <div class="debug-info">
+        <h3>📋 Debug Checklist</h3>
+        <ol>
+            <li><strong>Open browser console</strong> (F12 → Console tab)</li>
+            <li><strong>Check for errors</strong> - Look for red error messages</li>
+            <li><strong>Check for warnings</strong> - Look for yellow warning messages</li>
+            <li><strong>Look for debug logs</strong> - Should see "Section X expanded/collapsed" when clicking</li>
+            <li><strong>Check Network tab</strong> - See if converted.html is loading</li>
+        </ol>
+    </div>
+    
+    <div class="debug-info">
+        <h3>❌ Common Issues</h3>
+        <ul>
+            <li><strong>converted.html not found</strong> - Check Network tab for 404 errors</li>
+            <li><strong>JavaScript errors</strong> - Check Console tab for syntax errors</li>
+            <li><strong>Content not loading</strong> - Check if resume-root div is empty</li>
+            <li><strong>Event listeners not working</strong> - Check if sections have proper classes</li>
+        </ul>
+    </div>
+    
+    <div class="debug-info">
+        <h3>🔧 Quick Fixes to Try</h3>
+        <ol>
+            <li><strong>Hard refresh</strong> - Ctrl+F5 or Cmd+Shift+R</li>
+            <li><strong>Clear cache</strong> - Clear browser cache and cookies</li>
+            <li><strong>Check file paths</strong> - Ensure all files are in same directory</li>
+            <li><strong>Check file permissions</strong> - Ensure files are readable</li>
+        </ol>
+    </div>
+    
+    <script>
+        // Add some debug logging
+        console.log('🔍 Debug test page loaded');
+        console.log('📁 Current directory:', window.location.href);
+        
+        // Check if main page loads properly
+        window.addEventListener('load', () => {
+            console.log('✅ Debug page fully loaded');
+        });
+    </script>
+</body>
+</html>
