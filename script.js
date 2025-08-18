@@ -410,7 +410,10 @@
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
       sections.forEach(sec => {
-        sec.setAttribute('aria-expanded', 'false');
+        // Set initial state based on device type
+        const initialState = isMobile ? 'true' : 'false';
+        sec.setAttribute('aria-expanded', initialState);
+        
         const title = sec.querySelector('.resume-title');
         if (!title) return;
         

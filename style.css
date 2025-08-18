@@ -184,8 +184,54 @@ body {
   display: block;
 }
 
-.resume-section:hover .resume-details {
-  display: block;
+/* Desktop: sections start collapsed, mobile: sections start open */
+@media (min-width: 769px) {
+  .resume-section:hover .resume-details {
+    display: none; /* Disable hover expansion on desktop */
+  }
+  
+  /* Desktop sections start collapsed - add visual cues */
+  .resume-section {
+    cursor: pointer;
+  }
+  
+  .resume-section:hover {
+    background: linear-gradient(135deg, var(--card-bg) 0%, hsl(var(--hue), 65%, 99%) 100%);
+  }
+  
+  /* Show arrow indicator for collapsed sections on desktop */
+  .resume-title::after {
+    opacity: 0.7;
+    transform: rotate(0deg);
+  }
+  
+  /* Enhanced hover effect for desktop */
+  .resume-section:hover .resume-title {
+    color: hsl(calc(var(--hue) + 30), 85%, 45%);
+  }
+}
+
+@media (max-width: 768px) {
+  .resume-section:hover .resume-details {
+    display: block; /* Keep hover expansion on mobile */
+  }
+  
+  /* On mobile, show details by default for better UX */
+  .resume-details {
+    display: block;
+    margin-top: 12px;
+  }
+  
+  /* Ensure mobile sections that start open show correct arrow state */
+  .resume-section[aria-expanded="true"] .resume-title::after {
+    transform: rotate(180deg) !important;
+    opacity: 1 !important;
+  }
+  
+  /* Remove hover effects on mobile */
+  .resume-section:hover {
+    transform: none;
+  }
 }
 
 @keyframes slideDown {
