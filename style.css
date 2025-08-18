@@ -131,6 +131,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: color 0.2s ease;
+}
+
+.resume-title:hover {
+  color: hsl(calc(var(--hue) + 30), 85%, 45%);
+}
+
+.resume-title:active {
+  transform: scale(0.98);
 }
 
 .resume-title::after {

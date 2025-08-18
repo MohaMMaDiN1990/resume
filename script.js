@@ -407,18 +407,56 @@
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
       sections.forEach(sec => {
+        // Set initial state - sections start collapsed
         sec.setAttribute('aria-expanded', 'false');
+        
         const title = sec.querySelector('.resume-title');
         if (!title) return;
-        title.addEventListener('click', () => {
+        
+        // Enhanced click handler with better event handling
+        const handleToggle = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
           const expanded = sec.getAttribute('aria-expanded') === 'true';
-          sec.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
+          const newState = expanded ? 'false' : 'true';
+          
+          // Update state
+          sec.setAttribute('aria-expanded', newState);
+          
+          // Add visual feedback
+          if (newState === 'true') {
+            sec.style.transform = 'translateY(-2px)';
+            setTimeout(() => {
+              sec.style.transform = '';
+            }, 200);
+          }
+          
+          // Debug log
+          console.log(`Section "${title.textContent.trim()}" ${newState === 'true' ? 'expanded' : 'collapsed'}`);
+        };
+        
+        // Add multiple event listeners for better compatibility
+        title.addEventListener('click', handleToggle);
+        title.addEventListener('touchend', handleToggle);
+        
+        // Add keyboard support
         title.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            title.click();
+            handleToggle(e);
           }
+        });
+        
+        // Add focus management for accessibility
+        title.addEventListener('focus', () => {
+          sec.style.outline = '2px solid var(--accent)';
+          sec.style.outlineOffset = '2px';
+        });
+        
+        title.addEventListener('blur', () => {
+          sec.style.outline = '';
+          sec.style.outlineOffset = '';
         });
 
         const name = (title.textContent || '').trim().toLowerCase();
