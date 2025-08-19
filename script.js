@@ -400,9 +400,7 @@
 
       // (disabled) Do not strip contact lines; keep content exactly as in CV
 
-      // Split sections by markers before wiring interactions
-      splitTechnicalSkills();
-      splitAdditionalInfo();
+      // Keep content as-is: no splitting or restructuring
 
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
@@ -475,61 +473,7 @@
       
       console.log(`✅ All ${sections.length} sections processed and event listeners attached`);
 
-      // Move Teaching Experience before Industry Experience
-      const sectionsAfter = Array.from(resumeRoot.querySelectorAll('.resume-section'));
-      const teach = sectionsAfter.find(s => (s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase() === 'teaching experience');
-      const industry = sectionsAfter.find(s => ['industry experience', 'work experience', 'professional experience'].includes((s.querySelector('.resume-title')?.textContent || '').trim().toLowerCase()));
-      if (teach && industry && teach.compareDocumentPosition(industry) & Node.DOCUMENT_POSITION_FOLLOWING) {
-        resumeRoot.insertBefore(teach, industry);
-      }
-
-      // Move Additional Info. before References
-      const getTitle = (sec) => ((sec.querySelector('.resume-title')?.textContent || '').trim().toLowerCase().replace(/\.$/, ''));
-      const addInfo = sectionsAfter.find(s => getTitle(s) === 'additional info');
-      const refs = sectionsAfter.find(s => getTitle(s) === 'references');
-      if (addInfo && refs) {
-        resumeRoot.insertBefore(addInfo, refs);
-      }
-
-      // For each referee, insert email as a new line below their name and keep original details
-      if (refs) {
-        const details = refs.querySelector('.resume-details');
-        if (details) {
-          const nodes = Array.from(details.children);
-          const emailRe = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
-          for (let i = 0; i < nodes.length; i++) {
-            const node = nodes[i];
-            if (node.tagName === 'UL') {
-              const li = node.querySelector('li');
-              if (!li) continue;
-              // find the next paragraph with an email before the next UL
-              for (let j = i + 1; j < nodes.length; j++) {
-                if (nodes[j].tagName === 'UL') break;
-                if (nodes[j].tagName === 'P') {
-                  const text = nodes[j].textContent || '';
-                  const m = text.match(emailRe);
-                  if (m) {
-                    const email = m[0];
-                    // Insert a new paragraph with the email link right after the UL
-                    // Avoid duplicate insertion if already present
-                    const nextSibling = node.nextElementSibling;
-                    const already = nextSibling && nextSibling.tagName === 'P' && (nextSibling.textContent || '').includes(email);
-                    if (!already) {
-                      const p = document.createElement('p');
-                      const a = document.createElement('a');
-                      a.href = `mailto:${email}`;
-                      a.textContent = email;
-                      p.appendChild(a);
-                      details.insertBefore(p, node.nextSibling);
-                    }
-                    break;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      // Preserve original order and details without injections
 
       // Do not override Industry Experience: render exactly as in converted.html
     })
