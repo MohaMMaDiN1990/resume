@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Split Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
+        .section h2 { margin-top: 0; color: #333; }
+        .success { background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Technical Skills Split Test</h1>
+    <div id="debug-output"></div>
+    
+    <div id="resume-root">
+        <section class="resume-section" data-level="1">
+            <h2 class="resume-title" tabindex="0">Programming Languages</h2>
+            <div class="resume-details">
+                <ul>
+                    <li>Python</li>
+                    <li>C/C++ Code</li>
+                    <li>MATLAB</li>
+                    <li>Assembly &amp; Visual Basic</li>
+                    <li>VHDL</li>
+                </ul>
+                <p>TECHNICAL SKILLS</p>
+                <p><strong style="font-size: 1.5em;">Hardware Description &amp; Scripting Languages:</strong></p>
+                <ul>
+                    <li>VHDL, Verilog, Python, TCL, Visual Basic, Assembly</li>
+                </ul>
+                <p><strong style="font-size: 1.5em;">EDA &amp; IC Design Tools:</strong></p>
+                <ul>
+                    <li>Commercial: Cadence Virtuoso</li>
+                    <li>Open-Source: Magic VLSI, OpenROAD, Xschem, KLayout, Netgen</li>
+                    <li>PDKs: SKY130 (Efabless ecosystem)</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function log(message) {
+            const output = document.getElementById('debug-output');
+            const div = document.createElement('div');
+            div.className = 'success';
+            div.textContent = message;
+            output.appendChild(div);
+        }
+
+        // Copy the exact splitTechnicalSkills function from script.js
+        function splitTechnicalSkills() {
+            log('🔧 splitTechnicalSkills function called');
+            const resumeRoot = document.getElementById('resume-root');
+            const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+            log(`🔧 Found ${sections.length} sections`);
+            
+            sections.forEach(sec => {
+                const titleEl = sec.querySelector('.resume-title');
+                const title = (titleEl?.textContent || '').trim().toLowerCase();
+                log(`🔧 Checking section: "${title}"`);
+                
+                if (!['programming languages', 'skills', 'technical skills'].includes(title)) {
+                    log(`🔧 Skipping section "${title}" - not a target`);
+                    return;
+                }
+                
+                log(`🔧 Processing target section: "${title}"`);
+                const details = sec.querySelector('.resume-details');
+                if (!details) {
+                    log('🔧 No .resume-details found');
+                    return;
+                }
+                
+                const marker = Array.from(details.querySelectorAll('p')).find(p => 
+                    (p.textContent || '').trim().toLowerCase() === 'technical skills' || 
+                    (p.textContent || '').trim() === 'TECHNICAL SKILLS'
+                );
+                
+                if (!marker) {
+                    log('🔧 No "TECHNICAL SKILLS" marker found');
+                    return;
+                }
+                
+                log('🔧 Found "TECHNICAL SKILLS" marker! Creating new section...');
+                
+                const newSection = document.createElement('section');
+                newSection.className = 'resume-section';
+                newSection.setAttribute('data-level', '1');
+                
+                const h2 = document.createElement('h2');
+                h2.className = 'resume-title';
+                h2.setAttribute('tabindex', '0');
+                h2.textContent = 'Technical Skills';
+                
+                const newDetails = document.createElement('div');
+                newDetails.className = 'resume-details';
+                
+                let node = marker.nextSibling;
+                marker.remove();
+                const toMove = [];
+                
+                while (node) {
+                    const next = node.nextSibling;
+                    if (node.nodeType === 1) {
+                        toMove.push(node);
+                        log(`Moving element: ${node.tagName}`);
+                    }
+                    node = next;
+                }
+                
+                log(`Moving ${toMove.length} elements to new section`);
+                
+                toMove.forEach(n => newDetails.appendChild(n));
+                newSection.appendChild(h2);
+                newSection.appendChild(newDetails);
+                sec.parentNode.insertBefore(newSection, sec.nextSibling);
+                
+                log('✅ Technical Skills section created successfully!');
+            });
+        }
+
+        // Run the test
+        log('Starting test...');
+        splitTechnicalSkills();
+        log('Test completed!');
+    </script>
+</body>
+</html>
