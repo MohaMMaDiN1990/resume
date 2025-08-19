@@ -279,6 +279,20 @@ body {
   padding-left: 12px;
   margin: 14px 0;
 }
+
+/* Referee section dividers - ensure visibility on all devices */
+.referee-divider {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  border-bottom: 2px solid #666 !important;
+  text-align: center !important;
+  margin: 8px 0 !important;
+  padding-bottom: 4px !important;
+  color: #666 !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+}
 .entry__header {
   display: flex;
   justify-content: space-between;
