@@ -271,6 +271,15 @@ body {
     display: block;
     height: 300vh;
   }
+  
+  /* Reduce hero section height on desktop to eliminate empty space */
+  .hero {
+    min-height: auto !important;
+    height: fit-content !important;
+    padding: 20px !important;
+    gap: 12px !important;
+  }
+  
   /* Keep interactive behavior on desktop - do NOT force expand all details */
   .resume-section { 
     padding: 20px 22px; 
