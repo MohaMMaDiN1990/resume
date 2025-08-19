@@ -45,5 +45,20 @@
     </div>
 
     <script src="script.js?v=2025-08-19-1"></script>
+    <script>
+      (function(){
+        try {
+          var y = document.getElementById('year');
+          if (y) { y.textContent = new Date().getFullYear(); }
+          var popup = document.getElementById('welcome-popup');
+          if (popup) {
+            setTimeout(function(){
+              popup.classList.add('show');
+              setTimeout(function(){ popup.classList.remove('show'); }, 2000);
+            }, 1500);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </body>
 </html>
