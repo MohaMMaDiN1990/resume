@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = '2025-08-19-25';
+  const VERSION = '2025-08-19-26';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -313,78 +313,7 @@
     }
   }
 
-  function splitTechnicalSkills() {
-    const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
-    sections.forEach(sec => {
-      const titleEl = sec.querySelector('.resume-title');
-      const title = (titleEl?.textContent || '').trim().toLowerCase();
-      if (!['programming languages', 'skills', 'technical skills'].includes(title)) return;
-      const details = sec.querySelector('.resume-details');
-      if (!details) return;
-      const marker = Array.from(details.querySelectorAll('p')).find(p => (p.textContent || '').trim().toLowerCase() === 'technical skills' || (p.textContent || '').trim() === 'TECHNICAL SKILLS');
-      if (!marker) return;
-      const newSection = document.createElement('section');
-      newSection.className = 'resume-section';
-      newSection.setAttribute('data-level', '1');
-      const h2 = document.createElement('h2');
-      h2.className = 'resume-title';
-      h2.setAttribute('tabindex', '0');
-      h2.textContent = 'Technical Skills';
-      const newDetails = document.createElement('div');
-      newDetails.className = 'resume-details';
-      let node = marker.nextSibling;
-      marker.remove();
-      const toMove = [];
-      while (node) {
-        const next = node.nextSibling;
-        if (node.nodeType === 1) toMove.push(node);
-        node = next;
-      }
-                      toMove.forEach(n => newDetails.appendChild(n));
-                newSection.appendChild(h2);
-                newSection.appendChild(newDetails);
-                sec.parentNode.insertBefore(newSection, sec.nextSibling);
-                
-                // Make the new Technical Skills section expanded by default
-                newSection.setAttribute('aria-expanded', 'true');
-    });
-  }
-
-  function splitAdditionalInfo() {
-    const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
-    sections.forEach(sec => {
-      const details = sec.querySelector('.resume-details');
-      if (!details) return;
-      const lists = Array.from(details.querySelectorAll('ul'));
-      lists.forEach(ul => {
-        const lis = Array.from(ul.querySelectorAll('li'));
-        const markerIdx = lis.findIndex(li => (li.textContent || '').trim().toLowerCase() === 'additional info.' || (li.textContent || '').trim().toLowerCase() === 'additional info');
-        if (markerIdx !== -1) {
-          const newSection = document.createElement('section');
-          newSection.className = 'resume-section';
-          newSection.setAttribute('data-level', '1');
-          const h2 = document.createElement('h2');
-          h2.className = 'resume-title';
-          h2.setAttribute('tabindex', '0');
-          h2.textContent = 'Additional Info.';
-          const newDetails = document.createElement('div');
-          newDetails.className = 'resume-details';
-
-          const newList = document.createElement('ul');
-          for (let i = markerIdx + 1; i < lis.length; i++) {
-            newList.appendChild(lis[i]);
-          }
-          lis[markerIdx].remove();
-          if (newList.children.length > 0) {
-            newDetails.appendChild(newList);
-            newSection.appendChild(h2);
-            newSection.appendChild(newDetails);
-            sec.parentNode.insertBefore(newSection, sec.nextSibling);
-          }
-        }
-      });
-    });
-  }
+  
 
   // Load converted sections
   fetch('./converted.html?v=' + encodeURIComponent(VERSION), { cache: 'no-store' })
@@ -401,11 +330,7 @@
         }
       });
 
-      // Split technical skills into separate section
-      splitTechnicalSkills();
-
-      // Split additional info into separate section
-      splitAdditionalInfo();
+      // Technical skills and additional info are now separate sections in the HTML
 
       // (disabled) Do not strip contact lines; keep content exactly as in CV
 
