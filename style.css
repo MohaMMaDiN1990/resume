@@ -274,8 +274,7 @@ body {
   
   /* Reduce hero section height on desktop to eliminate empty space */
   .hero {
-    min-height: auto !important;
-    height: fit-content !important;
+    min-height: 400px !important;
     padding: 20px !important;
     gap: 12px !important;
   }
