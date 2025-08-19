@@ -269,7 +269,7 @@ body {
     gap: 12px !important;
   }
   
-  /* Keep interactive behavior on desktop - do NOT force expand all details */
+  /* Larger padding to make boxes feel taller on desktop */
   .resume-section { 
     padding: 20px 22px; 
     max-width: 100% !important;
