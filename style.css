@@ -82,14 +82,14 @@ body {
 }
 
 .hero__photo img {
-  display: block;
-  width: min(330px, 54vw);
-  aspect-ratio: 1 / 1;
-  height: auto;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  transform: rotate(calc(var(--tilt, -2deg)));
+  display: block !important;
+  width: min(330px, 54vw) !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  object-fit: cover !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow) !important;
+  transform: rotate(calc(var(--tilt, -2deg))) !important;
 }
 
 .site-footer {
@@ -322,6 +322,16 @@ body {
   overflow: hidden !important;
   word-wrap: break-word !important;
   box-sizing: border-box !important;
+}
+
+/* Force hero photo size - override any conflicting styles */
+.hero__photo img,
+.hero .hero__photo img,
+#app .hero__photo img {
+  width: min(330px, 54vw) !important;
+  height: auto !important;
+  max-width: 330px !important;
+  min-width: 200px !important;
 }
 
 /* Ensure References section maintains stable width on all devices */
