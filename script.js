@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = '2025-08-17-6';
+  const VERSION = '2025-08-19-1';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -7,6 +7,14 @@
 
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
+  }
+
+  // Download PDF button -> trigger print dialog
+  const downloadPdfButton = document.getElementById('download-pdf');
+  if (downloadPdfButton) {
+    downloadPdfButton.addEventListener('click', () => {
+      window.print();
+    });
   }
 
   const DATE_RE = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}|\b\d{4}\b|\b\d{4}\s*[–-]\s*(present|\d{4})/i;
