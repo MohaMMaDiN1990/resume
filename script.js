@@ -406,12 +406,19 @@
 
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
-      sections.forEach(sec => {
+      console.log(`🔍 Found ${sections.length} resume sections`);
+      
+      sections.forEach((sec, index) => {
         // Set initial state - sections start collapsed
         sec.setAttribute('aria-expanded', 'false');
         
         const title = sec.querySelector('.resume-title');
-        if (!title) return;
+        if (!title) {
+          console.warn(`⚠️ No title found in section ${index}`);
+          return;
+        }
+        
+        console.log(`✅ Processing section ${index + 1}: ${title.textContent.trim()}`);
         
         // Enhanced click handler with better event handling
         const handleToggle = (e) => {
@@ -433,7 +440,7 @@
           }
           
           // Debug log
-          console.log(`Section "${title.textContent.trim()}" ${newState === 'true' ? 'expanded' : 'collapsed'}`);
+          console.log(`🎯 Section "${title.textContent.trim()}" ${newState === 'true' ? 'expanded' : 'collapsed'}`);
         };
         
         // Add multiple event listeners for better compatibility
@@ -461,12 +468,13 @@
 
         const name = (title.textContent || '').trim().toLowerCase();
         if (name === 'education') {
-          const container = sec.querySelector('.resume-details');
-          buildEntries(container, name);
+          // Render exactly as converted; no transformation - keep original structure
         } else if (name === 'industry experience' || name === 'work experience' || name === 'professional experience') {
           // Render exactly as converted; no transformation
         }
       });
+      
+      console.log(`✅ All ${sections.length} sections processed and event listeners attached`);
 
       // Move Teaching Experience before Industry Experience
       const sectionsAfter = Array.from(resumeRoot.querySelectorAll('.resume-section'));

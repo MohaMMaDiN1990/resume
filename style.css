@@ -262,8 +262,7 @@ body {
     display: block;
     height: 300vh;
   }
-  /* Expand all details on larger screens to significantly increase right column length */
-  .resume-details { display: block; }
+  /* Keep interactive behavior on desktop - do NOT force expand all details */
   .resume-section { padding: 20px 22px; }
 }
 
