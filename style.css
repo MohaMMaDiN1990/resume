@@ -30,6 +30,25 @@ body {
   backdrop-filter: saturate(1.05) brightness(0.98);
 }
 
+/* CSS-only floating icon (IC2.png) pinned at top-right; content remains untouched */
+body::after {
+  content: "";
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  background: url('./IC2.png') center/contain no-repeat transparent;
+  z-index: 2147483647;
+  animation: ic2-pulse 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ic2-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
 #app {
   max-width: 1600px;
   margin: 0 auto;
