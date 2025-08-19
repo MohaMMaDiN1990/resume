@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Technical Skills Split</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-info { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .section { border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
+        .section h2 { margin-top: 0; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Debug Technical Skills Split</h1>
+    <div id="debug-output"></div>
+    <div id="resume-root"></div>
+
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('debug-output');
+            const div = document.createElement('div');
+            div.className = `debug-info ${type}`;
+            div.textContent = message;
+            output.appendChild(div);
+        }
+
+        // Copy the splitTechnicalSkills function from script.js
+        function splitTechnicalSkills() {
+            log('Starting splitTechnicalSkills function...', 'success');
+            
+            const resumeRoot = document.getElementById('resume-root');
+            const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+            
+            log(`Found ${sections.length} sections total`, 'info');
+            
+            sections.forEach((sec, index) => {
+                const titleEl = sec.querySelector('.resume-title');
+                const title = (titleEl?.textContent || '').trim().toLowerCase();
+                
+                log(`Section ${index + 1}: "${title}"`, 'info');
+                
+                if (!['programming languages', 'skills', 'technical skills'].includes(title)) {
+                    log(`Skipping section "${title}" - not a target section`, 'info');
+                    return;
+                }
+                
+                log(`Processing target section: "${title}"`, 'success');
+                
+                const details = sec.querySelector('.resume-details');
+                if (!details) {
+                    log('No .resume-details found in section', 'error');
+                    return;
+                }
+                
+                const marker = Array.from(details.querySelectorAll('p')).find(p => 
+                    (p.textContent || '').trim().toLowerCase() === 'technical skills' || 
+                    (p.textContent || '').trim() === 'TECHNICAL SKILLS'
+                );
+                
+                if (!marker) {
+                    log('No "TECHNICAL SKILLS" marker found in section', 'error');
+                    return;
+                }
+                
+                log('Found "TECHNICAL SKILLS" marker! Creating new section...', 'success');
+                
+                const newSection = document.createElement('section');
+                newSection.className = 'resume-section';
+                newSection.setAttribute('data-level', '1');
+                
+                const h2 = document.createElement('h2');
+                h2.className = 'resume-title';
+                h2.setAttribute('tabindex', '0');
+                h2.textContent = 'Technical Skills';
+                
+                const newDetails = document.createElement('div');
+                newDetails.className = 'resume-details';
+                
+                let node = marker.nextSibling;
+                marker.remove();
+                const toMove = [];
+                
+                while (node) {
+                    const next = node.nextSibling;
+                    if (node.nodeType === 1) {
+                        toMove.push(node);
+                        log(`Moving element: ${node.tagName}`, 'info');
+                    }
+                    node = next;
+                }
+                
+                log(`Moving ${toMove.length} elements to new section`, 'success');
+                
+                toMove.forEach(n => newDetails.appendChild(n));
+                newSection.appendChild(h2);
+                newSection.appendChild(newDetails);
+                sec.parentNode.insertBefore(newSection, sec.nextSibling);
+                
+                log('Technical Skills section created successfully!', 'success');
+            });
+        }
+
+        // Load the converted.html content
+        fetch('./converted.html')
+            .then(r => r.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const generatedResume = doc.querySelector('#generated-resume');
+                
+                if (generatedResume) {
+                    document.getElementById('resume-root').innerHTML = generatedResume.innerHTML;
+                    log('Loaded converted.html content', 'success');
+                    
+                    // Show initial state
+                    log('=== INITIAL STATE ===', 'info');
+                    document.querySelectorAll('.resume-section').forEach((sec, i) => {
+                        const title = sec.querySelector('.resume-title')?.textContent || 'No title';
+                        log(`Section ${i + 1}: ${title}`, 'info');
+                    });
+                    
+                    // Run the split function
+                    log('=== RUNNING SPLIT FUNCTION ===', 'info');
+                    splitTechnicalSkills();
+                    
+                    // Show final state
+                    log('=== FINAL STATE ===', 'info');
+                    document.querySelectorAll('.resume-section').forEach((sec, i) => {
+                        const title = sec.querySelector('.resume-title')?.textContent || 'No title';
+                        log(`Section ${i + 1}: ${title}`, 'info');
+                    });
+                } else {
+                    log('Could not find #generated-resume in converted.html', 'error');
+                }
+            })
+            .catch(error => {
+                log(`Error loading converted.html: ${error}`, 'error');
+            });
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = '2025-08-19-22';
+  const VERSION = '2025-08-19-23';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -314,15 +314,29 @@
   }
 
   function splitTechnicalSkills() {
+    console.log('🔧 splitTechnicalSkills function called');
     const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+    console.log(`🔧 Found ${sections.length} sections`);
     sections.forEach(sec => {
       const titleEl = sec.querySelector('.resume-title');
       const title = (titleEl?.textContent || '').trim().toLowerCase();
-      if (!['programming languages', 'skills', 'technical skills'].includes(title)) return;
+      console.log(`🔧 Checking section: "${title}"`);
+      if (!['programming languages', 'skills', 'technical skills'].includes(title)) {
+        console.log(`🔧 Skipping section "${title}" - not a target`);
+        return;
+      }
+      console.log(`🔧 Processing target section: "${title}"`);
       const details = sec.querySelector('.resume-details');
-      if (!details) return;
+      if (!details) {
+        console.log('🔧 No .resume-details found');
+        return;
+      }
       const marker = Array.from(details.querySelectorAll('p')).find(p => (p.textContent || '').trim().toLowerCase() === 'technical skills' || (p.textContent || '').trim() === 'TECHNICAL SKILLS');
-      if (!marker) return;
+      if (!marker) {
+        console.log('🔧 No "TECHNICAL SKILLS" marker found');
+        return;
+      }
+      console.log('🔧 Found "TECHNICAL SKILLS" marker! Creating new section...');
       const newSection = document.createElement('section');
       newSection.className = 'resume-section';
       newSection.setAttribute('data-level', '1');
@@ -399,7 +413,9 @@
       });
 
       // Split technical skills into separate section
+      console.log('🔧 About to call splitTechnicalSkills()');
       splitTechnicalSkills();
+      console.log('🔧 Finished calling splitTechnicalSkills()');
 
       // Split additional info into separate section
       splitAdditionalInfo();
