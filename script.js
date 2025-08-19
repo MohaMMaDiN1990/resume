@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = '2025-08-19-23';
+  const VERSION = '2025-08-19-24';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -354,10 +354,13 @@
         if (node.nodeType === 1) toMove.push(node);
         node = next;
       }
-      toMove.forEach(n => newDetails.appendChild(n));
-      newSection.appendChild(h2);
-      newSection.appendChild(newDetails);
-      sec.parentNode.insertBefore(newSection, sec.nextSibling);
+                      toMove.forEach(n => newDetails.appendChild(n));
+                newSection.appendChild(h2);
+                newSection.appendChild(newDetails);
+                sec.parentNode.insertBefore(newSection, sec.nextSibling);
+                
+                // Make the new Technical Skills section expanded by default
+                newSection.setAttribute('aria-expanded', 'true');
     });
   }
 
