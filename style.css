@@ -34,13 +34,22 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+}
+
+/* Left sidebar (photo + contacts) */
+.sidebar {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  align-self: start;
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: 1fr 200px;
-  gap: 24px;
-  align-items: center;
+  display: block;
   background: var(--card-bg);
   border-radius: 16px;
   padding: 24px;
@@ -67,17 +76,15 @@ body {
   color: hsl(220, 10%, 45%);
 }
 
-.hero__photo {
-  justify-self: end;
-}
+.hero__photo { margin-bottom: 16px; }
 
 .hero__photo img {
   display: block;
-  width: min(200px, 40vw);
+  width: 100%;
+  max-width: 220px;
   height: auto;
   border-radius: 12px;
   box-shadow: var(--shadow);
-  transform: rotate(calc(var(--tilt, -2deg)));
 }
 
 .site-footer {
@@ -214,6 +221,7 @@ body {
   #app {
     display: block;
   }
+  .sidebar { margin-bottom: 16px; }
   #resume-root {
     grid-template-columns: 1fr;
     margin-top: 24px;
@@ -225,6 +233,15 @@ body {
   }
   .hero__photo { 
     align-self: center;
+    display: flex;
+    justify-content: center;
+  }
+  .hero__photo img {
+    max-width: 160px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
   }
   /* Keep contacts compact and even on small screens */
   .hero__contacts {
