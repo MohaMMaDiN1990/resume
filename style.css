@@ -256,8 +256,19 @@ body {
 }
 
 @media (min-width: 901px) {
-  /* Desktop: ensure popup sits slightly below top */
-  .welcome-popup { padding-top: 40px !important; }
+  /* Desktop: place popup across the column boundary (half on each column) */
+  .welcome-popup {
+    position: absolute !important; /* relative to #app */
+    top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    display: block !important; /* let content be absolutely positioned */
+    padding-top: 0 !important;
+  }
+  .welcome-content {
+    position: absolute !important;
+    top: 40px !important;               /* slightly below top */
+    left: 412px !important;             /* 400px left column + 12px half-gap */
+    transform: translateX(-50%) !important; /* center on the boundary */
+  }
   #resume-root {
     /* Keep single-column to increase vertical length on laptops */
     grid-template-columns: 1fr;
