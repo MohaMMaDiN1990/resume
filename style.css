@@ -264,6 +264,7 @@ body {
     position: relative;
     max-width: 100% !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
   #resume-root::after {
     content: "";
@@ -275,12 +276,26 @@ body {
     padding: 20px 22px; 
     max-width: 100% !important;
     width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
   
   /* Ensure content stretches to full width on desktop */
   .resume-details {
     max-width: 100% !important;
     width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Prevent content from affecting column width */
+  .resume-details ul,
+  .resume-details p,
+  .resume-details .referee-divider {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
 }
 
@@ -307,6 +322,14 @@ body {
   overflow: hidden !important;
   word-wrap: break-word !important;
   box-sizing: border-box !important;
+}
+
+/* Ensure References section maintains stable width on all devices */
+.resume-section:has(.referee-divider) {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
 .entry__header {
   display: flex;
