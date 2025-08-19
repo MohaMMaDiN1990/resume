@@ -235,24 +235,16 @@ body {
 }
 
 @media (min-width: 901px) {
-  /* Desktop: ensure popup sits slightly below top */
+  /* Desktop layout: two columns for resume content */
   .welcome-popup { padding-top: 40px !important; }
   #resume-root {
-    /* Keep single-column to increase vertical length on laptops */
-    grid-template-columns: 1fr;
-    min-height: calc(400vh - 48px);
-    gap: 24px;
-    padding-bottom: 48px;
-    position: relative;
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    min-height: auto;
+    padding-bottom: 0;
+    position: static;
   }
-  #resume-root::after {
-    content: "";
-    display: block;
-    height: 300vh;
-  }
+  #resume-root::after { content: none !important; display: none !important; height: 0 !important; }
   
   /* Reduce hero section height on desktop to eliminate empty space */
   .hero {
@@ -320,8 +312,7 @@ body {
 #app .hero__photo img {
   width: min(330px, 54vw) !important;
   height: auto !important;
-  max-width: 330px !important;
-  min-width: 200px !important;
+  max-width: 100% !important;
 }
 
 /* Ensure References section maintains stable width on all devices */
