@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = '2025-08-18-2';
+  const VERSION = '2025-08-19-22';
   const app = document.getElementById('app');
   const root = document.documentElement;
   const resumeRoot = document.getElementById('resume-root');
@@ -397,6 +397,12 @@
           sec.remove();
         }
       });
+
+      // Split technical skills into separate section
+      splitTechnicalSkills();
+
+      // Split additional info into separate section
+      splitAdditionalInfo();
 
       // (disabled) Do not strip contact lines; keep content exactly as in CV
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Skills Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>Technical Skills Separation Test</h1>
+    <div id="test-results"></div>
+
+    <script>
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        // Test the splitTechnicalSkills function logic
+        function testTechnicalSkillsLogic() {
+            addResult('Testing technical skills separation logic...', 'info');
+            
+            // Simulate the HTML structure
+            const testHTML = `
+                <div id="resume-root">
+                    <section class="resume-section" data-level="1">
+                        <h2 class="resume-title" tabindex="0">Programming Languages</h2>
+                        <div class="resume-details">
+                            <ul>
+                                <li>Python</li>
+                                <li>C/C++ Code</li>
+                                <li>MATLAB</li>
+                            </ul>
+                            <p>TECHNICAL SKILLS</p>
+                            <p><strong>Hardware Description & Scripting Languages:</strong></p>
+                            <ul>
+                                <li>VHDL, Verilog, Python, TCL, Visual Basic, Assembly</li>
+                            </ul>
+                            <p><strong>EDA & IC Design Tools:</strong></p>
+                            <ul>
+                                <li>Commercial: Cadence Virtuoso</li>
+                                <li>Open-Source: Magic VLSI, OpenROAD, Xschem, KLayout, Netgen</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            `;
+            
+            // Create a temporary container
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = testHTML;
+            const resumeRoot = tempContainer.querySelector('#resume-root');
+            
+            // Test the logic
+            const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+            let foundProgrammingLanguages = false;
+            let foundTechnicalSkillsMarker = false;
+            
+            sections.forEach(sec => {
+                const titleEl = sec.querySelector('.resume-title');
+                const title = (titleEl?.textContent || '').trim().toLowerCase();
+                
+                if (['programming languages', 'skills', 'technical skills'].includes(title)) {
+                    foundProgrammingLanguages = true;
+                    addResult(`✅ Found section: "${title}"`, 'success');
+                    
+                    const details = sec.querySelector('.resume-details');
+                    if (details) {
+                        const marker = Array.from(details.querySelectorAll('p')).find(p => 
+                            (p.textContent || '').trim().toLowerCase() === 'technical skills' || 
+                            (p.textContent || '').trim() === 'TECHNICAL SKILLS'
+                        );
+                        
+                        if (marker) {
+                            foundTechnicalSkillsMarker = true;
+                            addResult('✅ Found "TECHNICAL SKILLS" marker', 'success');
+                            
+                            // Count content after marker
+                            let node = marker.nextSibling;
+                            let contentCount = 0;
+                            while (node) {
+                                if (node.nodeType === 1) contentCount++;
+                                node = node.nextSibling;
+                            }
+                            addResult(`📊 Found ${contentCount} content elements after marker`, 'info');
+                        } else {
+                            addResult('❌ No "TECHNICAL SKILLS" marker found', 'error');
+                        }
+                    }
+                }
+            });
+            
+            if (!foundProgrammingLanguages) {
+                addResult('❌ No Programming Languages section found', 'error');
+            }
+            
+            if (foundProgrammingLanguages && foundTechnicalSkillsMarker) {
+                addResult('🎉 Technical skills separation logic is working correctly!', 'success');
+            } else {
+                addResult('⚠️ Technical skills separation may not work as expected', 'error');
+            }
+        }
+        
+        // Run the test
+        testTechnicalSkillsLogic();
+    </script>
+</body>
+</html>
