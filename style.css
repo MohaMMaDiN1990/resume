@@ -153,9 +153,8 @@ body {
   color: hsl(220, 15%, 20%);
 }
 
-/* Show details on hover or when expanded */
-.resume-section[aria-expanded="true"] .resume-details,
-.resume-section:hover .resume-details { display: block; }
+/* Show details only when expanded (click toggled) */
+.resume-section[aria-expanded="true"] .resume-details { display: block; }
 
 .resume-details p {
   margin: 0 0 10px 0;
@@ -306,14 +305,8 @@ body {
   box-sizing: border-box !important;
 }
 
-/* Force hero photo size - override any conflicting styles */
-.hero__photo img,
-.hero .hero__photo img,
-#app .hero__photo img {
-  width: min(330px, 54vw) !important;
-  height: auto !important;
-  max-width: 100% !important;
-}
+/* Ensure hero photo stays within container on all screens */
+.hero__photo img { max-width: 100%; height: auto; }
 
 /* Ensure References section maintains stable width on all devices */
 .resume-section:has(.referee-divider) {
