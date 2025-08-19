@@ -353,28 +353,31 @@ body {
 /* Welcome Popup Styles - Added separately to avoid conflicts */
 .welcome-popup {
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  background: var(--card-bg) !important;
-  border: 2px solid var(--accent) !important;
-  border-radius: 16px !important;
-  padding: 24px !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   z-index: 9999 !important;
   opacity: 0 !important;
   visibility: hidden !important;
-  transition: all 0.5s ease !important;
-  max-width: 400px !important;
-  width: 90% !important;
-  text-align: center !important;
+  transition: opacity 0.4s ease, visibility 0.4s ease !important;
   pointer-events: none !important;
-  display: block !important;
 }
 
 .welcome-popup.show {
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+.welcome-content {
+  background: var(--card-bg) !important;
+  border: 2px solid var(--accent) !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  max-width: 420px !important;
+  width: calc(100% - 32px) !important;
+  text-align: center !important;
 }
 
 .welcome-content h3 {
@@ -396,6 +399,7 @@ body {
   font-size: 14px;
   color: var(--muted);
 }
+
 .entry__header {
   display: flex;
   justify-content: space-between;
