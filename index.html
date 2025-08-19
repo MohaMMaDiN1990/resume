@@ -47,23 +47,32 @@
     <script src="script.js?v=2025-08-19-1"></script>
     <script>
       (function(){
-        try {
-          var didRun = false;
-          var y = document.getElementById('year');
-          if (y) { y.textContent = new Date().getFullYear(); }
-          function showOnce(){
-            if (didRun) return; didRun = true;
+        var didRun = false;
+        function showOnce(){
+          if (didRun) return; didRun = true;
+          try {
+            var y = document.getElementById('year');
+            if (y) { y.textContent = new Date().getFullYear(); }
             var popup = document.getElementById('welcome-popup');
             if (!popup) return;
+            // Force visible
             popup.classList.add('show');
-            setTimeout(function(){ popup.classList.remove('show'); }, 2000);
-          }
-          if (document.readyState === 'complete') {
-            setTimeout(showOnce, 800);
-          } else {
-            window.addEventListener('load', function(){ setTimeout(showOnce, 800); }, { once: true });
-          }
-        } catch (e) {}
+            popup.style.opacity = '1';
+            popup.style.visibility = 'visible';
+            // Hide after 2s
+            setTimeout(function(){
+              popup.classList.remove('show');
+              popup.style.opacity = '0';
+              popup.style.visibility = 'hidden';
+            }, 2000);
+          } catch(e){}
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function(){ setTimeout(showOnce, 200); }, { once: true });
+        } else {
+          setTimeout(showOnce, 200);
+        }
+        window.addEventListener('load', function(){ setTimeout(showOnce, 600); }, { once: true });
       })();
     </script>
   </body>
