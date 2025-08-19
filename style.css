@@ -352,27 +352,29 @@ body {
 
 /* Welcome Popup Styles - Added separately to avoid conflicts */
 .welcome-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--card-bg);
-  border: 2px solid var(--accent);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.5s ease;
-  max-width: 400px;
-  text-align: center;
-  pointer-events: none;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: var(--card-bg) !important;
+  border: 2px solid var(--accent) !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  z-index: 9999 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.5s ease !important;
+  max-width: 400px !important;
+  width: 90% !important;
+  text-align: center !important;
+  pointer-events: none !important;
+  display: block !important;
 }
 
 .welcome-popup.show {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .welcome-content h3 {

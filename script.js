@@ -560,16 +560,22 @@
     const popup = document.getElementById('welcome-popup');
     if (popup) {
       console.log('🎉 Welcome popup found, showing...');
-      // Show popup
-      popup.classList.add('show');
+      // Ensure popup is hidden initially
+      popup.classList.remove('show');
       
-      // Hide after 2 seconds
+      // Small delay then show popup
       setTimeout(function() {
-        console.log('⏰ Hiding welcome popup after 2 seconds');
-        popup.classList.remove('show');
-      }, 2000);
+        popup.classList.add('show');
+        console.log('✨ Welcome popup now visible');
+        
+        // Hide after 2 seconds
+        setTimeout(function() {
+          console.log('⏰ Hiding welcome popup after 2 seconds');
+          popup.classList.remove('show');
+        }, 2000);
+      }, 100);
     } else {
       console.error('❌ Welcome popup element not found!');
     }
-  }, 2000); // Wait 2 seconds after page loads
+  }, 3000); // Wait 3 seconds after page loads to ensure everything is ready
 })();
