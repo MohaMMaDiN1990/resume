@@ -404,3 +404,17 @@ body {
 .entry__body p {
   margin: 6px 0;
 }
+
+/* Decorative icon next to Download PDF: 2x size with subtle pulse */
+.hero__subtitle img[aria-hidden="true"][src$="IC2.png"] {
+  width: 32px !important;
+  height: 32px !important;
+  margin-left: 6px !important;
+  vertical-align: middle !important;
+  animation: dl-icon-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes dl-icon-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
