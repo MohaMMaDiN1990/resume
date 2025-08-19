@@ -167,8 +167,14 @@ body {
   color: hsl(220, 15%, 20%);
 }
 
+/* CRITICAL: Ensure all sections start collapsed by default */
+.resume-section .resume-details {
+  display: none !important;
+}
+
+/* Only show content when explicitly expanded */
 .resume-section[aria-expanded="true"] .resume-details {
-  display: block;
+  display: block !important;
 }
 
 .resume-details p {

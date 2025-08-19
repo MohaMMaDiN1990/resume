@@ -443,9 +443,8 @@
           console.log(`🎯 Section "${title.textContent.trim()}" ${newState === 'true' ? 'expanded' : 'collapsed'}`);
         };
         
-        // Add multiple event listeners for better compatibility
+        // Add click event listener only - remove touchend to avoid conflicts
         title.addEventListener('click', handleToggle);
-        title.addEventListener('touchend', handleToggle);
         
         // Add keyboard support
         title.addEventListener('keydown', (e) => {
