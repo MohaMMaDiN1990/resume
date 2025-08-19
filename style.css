@@ -256,6 +256,8 @@ body {
 }
 
 @media (min-width: 901px) {
+  /* Desktop: ensure popup sits slightly below top */
+  .welcome-popup { padding-top: 40px !important; }
   #resume-root {
     /* Keep single-column to increase vertical length on laptops */
     grid-template-columns: 1fr;
@@ -358,7 +360,7 @@ body {
   display: flex !important;
   align-items: flex-start !important;
   justify-content: center !important;
-  padding-top: 12vh !important;
+  padding-top: 8vh !important;
   z-index: 9999 !important;
   opacity: 0 !important;
   visibility: hidden !important;
