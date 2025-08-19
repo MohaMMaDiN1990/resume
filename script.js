@@ -406,12 +406,11 @@
 
       // Click-to-toggle and grouping
       const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
-      const expandByDefaultOnDesktop = window.matchMedia('(min-width: 901px)').matches;
       console.log(`🔍 Found ${sections.length} resume sections`);
       
       sections.forEach((sec, index) => {
-        // Set initial state: expand on desktop, collapse on mobile
-        sec.setAttribute('aria-expanded', expandByDefaultOnDesktop ? 'true' : 'false');
+        // Set initial state - sections start collapsed
+        sec.setAttribute('aria-expanded', 'false');
         
         const title = sec.querySelector('.resume-title');
         if (!title) {
