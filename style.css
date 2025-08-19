@@ -98,7 +98,7 @@ body {
 #resume-root {
   margin-top: 24px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -254,7 +254,7 @@ body {
   /* Desktop layout: two columns for resume content */
   .welcome-popup { padding-top: 40px !important; }
   #resume-root {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 16px;
     min-height: auto;
     padding-bottom: 0;
