@@ -55,16 +55,18 @@
             if (y) { y.textContent = new Date().getFullYear(); }
             var popup = document.getElementById('welcome-popup');
             if (!popup) return;
-            // Force visible
+            // Force visible for desktop reliably
+            popup.style.display = 'flex';
             popup.classList.add('show');
             popup.style.opacity = '1';
             popup.style.visibility = 'visible';
-            // Hide after 2s
+            // Hide after 3s
             setTimeout(function(){
               popup.classList.remove('show');
               popup.style.opacity = '0';
               popup.style.visibility = 'hidden';
-            }, 2000);
+              popup.style.display = 'none';
+            }, 3000);
           } catch(e){}
         }
         if (document.readyState === 'loading') {

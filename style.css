@@ -353,11 +353,12 @@ body {
 
 /* Welcome Popup Styles - Added separately to avoid conflicts */
 .welcome-popup {
-  position: absolute !important; /* relative to #app */
-  inset: 0 !important;
+  position: fixed !important; /* viewport-fixed for desktop reliability */
+  top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   justify-content: center !important;
+  padding-top: 12vh !important;
   z-index: 9999 !important;
   opacity: 0 !important;
   visibility: hidden !important;
@@ -379,7 +380,7 @@ body {
   max-width: 420px !important;
   width: calc(100% - 32px) !important;
   text-align: center !important;
-  transform: translateY(-40%) !important;
+  transform: none !important;
 }
 
 .welcome-content h3 {
