@@ -554,28 +554,4 @@
   }
 
   window.addEventListener('mousemove', onMouseMove, { passive: true });
-  
-  // Welcome Popup - Simple implementation that won't interfere with existing code
-  setTimeout(function() {
-    const popup = document.getElementById('welcome-popup');
-    if (popup) {
-      console.log('🎉 Welcome popup found, showing...');
-      // Ensure popup is hidden initially
-      popup.classList.remove('show');
-      
-      // Small delay then show popup
-      setTimeout(function() {
-        popup.classList.add('show');
-        console.log('✨ Welcome popup now visible');
-        
-        // Hide after 2 seconds
-        setTimeout(function() {
-          console.log('⏰ Hiding welcome popup after 2 seconds');
-          popup.classList.remove('show');
-        }, 2000);
-      }, 100);
-    } else {
-      console.error('❌ Welcome popup element not found!');
-    }
-  }, 3000); // Wait 3 seconds after page loads to ensure everything is ready
 })();
