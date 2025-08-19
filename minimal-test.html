@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Resume Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background: #f5f5f5;
+        }
+        .resume-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 16px 18px;
+            margin: 16px 0;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        .resume-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #007bff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: color 0.2s ease;
+        }
+        .resume-title:hover {
+            color: #0056b3;
+        }
+        .resume-title::after {
+            content: '▼';
+            font-size: 14px;
+            color: #007bff;
+            transition: transform 0.3s ease;
+            opacity: 0.7;
+        }
+        .resume-section[aria-expanded="true"] .resume-title::after {
+            transform: rotate(180deg);
+            opacity: 1;
+        }
+        .resume-details {
+            display: none;
+            margin-top: 12px;
+            color: #333;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 12px;
+        }
+        .resume-section[aria-expanded="true"] .resume-details {
+            display: block;
+        }
+        .test-info {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-info h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Minimal Resume Interactive Test</h1>
+    
+    <div class="test-info">
+        <h3>🎯 What This Tests</h3>
+        <p>This page replicates the exact structure of your resume sections to test the interactive behavior in isolation.</p>
+        <p><strong>Expected:</strong> Click section titles to expand/collapse content with arrow indicators.</p>
+    </div>
+    
+    <div id="resume-root">
+        <section class="resume-section" data-level="1">
+            <h2 class="resume-title" tabindex="0">Education</h2>
+            <div class="resume-details">
+                <ul>
+                    <li>Shahid-Chamran University…….Ahvaz, Iran</li>
+                </ul>
+                <p>Master of Science in Electrical and Electronic Engineering July 2011 GPA: 16.66 out of 20</p>
+                <p>Thesis title: Digital Background Calibration of Timing and Gain Mismatch Errors in Time-Interleaved ADCs</p>
+            </div>
+        </section>
+        
+        <section class="resume-section" data-level="1">
+            <h2 class="resume-title" tabindex="0">Teaching Experience</h2>
+            <div class="resume-details">
+                <ul>
+                    <li>Applied Mathematics • Undergraduate Students, Shahid-Mohajer Isfahan Technical Higher Educational Center – Recitation Classes</li>
+                    <li>Electronics 2 • Undergraduate Students, Quchan University of Technology – Recitation Classes</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="resume-section" data-level="1">
+            <h2 class="resume-title" tabindex="0">Industry Experience</h2>
+            <div class="resume-details">
+                <p><strong style="font-size: 1.5em;">Instrumentation & Control Engineer:</strong></p>
+                <p>Engineering Department, National Iranian South Oil Company, Ahvaz, Iran</p>
+                <p>December 2019 – present</p>
+                <ul>
+                    <li>I & C engineering in the most important EPC projects of Iran</li>
+                    <li>Assessing designing documents</li>
+                    <li>Evaluating design, engineering, and construction of projects in compliance with International Standards</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="resume-section" data-level="1">
+            <h2 class="resume-title" tabindex="0">Technical Skills</h2>
+            <div class="resume-details">
+                <p><strong style="font-size: 1.5em;">Hardware Description & Scripting Languages:</strong></p>
+                <ul>
+                    <li>VHDL, Verilog, Python, TCL, Visual Basic, Assembly</li>
+                </ul>
+                <p><strong style="font-size: 1.5em;">EDA & IC Design Tools:</strong></p>
+                <ul>
+                    <li>Commercial: Cadence Virtuoso</li>
+                    <li>Open-Source: Magic VLSI, OpenROAD, Xschem, KLayout, Netgen</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <div class="test-info">
+        <h3>🔧 Test Instructions</h3>
+        <ol>
+            <li><strong>Check Initial State:</strong> All sections should be collapsed with ▼ arrows</li>
+            <li><strong>Click Section Titles:</strong> Content should expand, arrow becomes ▲</li>
+            <li><strong>Click Again:</strong> Content should collapse, arrow becomes ▼</li>
+            <li><strong>Check Console:</strong> Should see logging messages</li>
+        </ol>
+    </div>
+    
+    <script>
+        console.log('🚀 Minimal test page loaded');
+        
+        // Replicate the exact JavaScript logic from the main site
+        const resumeRoot = document.getElementById('resume-root');
+        
+        if (!resumeRoot) {
+            console.error('❌ resume-root element not found!');
+        } else {
+            console.log('✅ resume-root element found');
+        }
+        
+        // Click-to-toggle functionality - EXACT COPY from main site
+        const sections = Array.from(resumeRoot.querySelectorAll('.resume-section'));
+        console.log(`📊 Found ${sections.length} sections`);
+        
+        sections.forEach((sec, index) => {
+            // Set initial state - sections start collapsed
+            sec.setAttribute('aria-expanded', 'false');
+            
+            const title = sec.querySelector('.resume-title');
+            if (!title) {
+                console.warn(`⚠️ No title found in section ${index}`);
+                return;
+            }
+            
+            console.log(`✅ Processing section: ${title.textContent.trim()}`);
+            
+            // Simple click handler - exactly as it should work
+            title.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const expanded = sec.getAttribute('aria-expanded') === 'true';
+                const newState = expanded ? 'false' : 'true';
+                
+                sec.setAttribute('aria-expanded', newState);
+                
+                console.log(`🎯 Section "${title.textContent.trim()}" ${newState === 'true' ? 'expanded' : 'collapsed'}`);
+            });
+            
+            console.log(`✅ Event listener added to: ${title.textContent.trim()}`);
+        });
+        
+        console.log('✅ All event listeners attached');
+        
+        // Test if the CSS is working
+        setTimeout(() => {
+            console.log('🔍 Testing CSS functionality...');
+            const testSection = sections[0];
+            if (testSection) {
+                testSection.setAttribute('aria-expanded', 'true');
+                console.log('✅ CSS test: Section expanded');
+                setTimeout(() => {
+                    testSection.setAttribute('aria-expanded', 'false');
+                    console.log('✅ CSS test: Section collapsed');
+                }, 1000);
+            }
+        }, 500);
+    </script>
+</body>
+</html>
