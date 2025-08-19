@@ -219,7 +219,6 @@ body {
     margin-top: 24px;
   }
   .hero {
-    grid-template-columns: 1fr;
     text-align: center;
     position: static;
     min-height: auto;
@@ -227,7 +226,6 @@ body {
   .hero__photo { 
     align-self: center;
   }
-  .hero__photo img { width: 160px; max-width: 60vw; }
   /* Keep contacts compact and even on small screens */
   .hero__contacts {
     grid-template-columns: repeat(2, 1fr);
