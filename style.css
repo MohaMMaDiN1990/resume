@@ -262,6 +262,8 @@ body {
     gap: 24px;
     padding-bottom: 48px;
     position: relative;
+    max-width: 100% !important;
+    width: 100% !important;
   }
   #resume-root::after {
     content: "";
@@ -269,7 +271,17 @@ body {
     height: 300vh;
   }
   /* Keep interactive behavior on desktop - do NOT force expand all details */
-  .resume-section { padding: 20px 22px; }
+  .resume-section { 
+    padding: 20px 22px; 
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  /* Ensure content stretches to full width on desktop */
+  .resume-details {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 }
 
 
@@ -285,7 +297,6 @@ body {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  border-bottom: 2px solid #666 !important;
   text-align: center !important;
   margin: 8px 0 !important;
   padding-bottom: 4px !important;
